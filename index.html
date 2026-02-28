@@ -1,411 +1,414 @@
-<!-- Save as: index.html
-     Deploy on GitHub Pages: https://adleqp.github.io/
-     (Works as a single-file site: modern UI + PLAN & PRACTICE + progress tracking)
+<!-- Save as: index.html (root of adleqp.github.io repo)
+     Modern Roadmap UI + PLAN/PRACTICE + Notes (saved locally) + Export
 -->
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>ADLEQP Blueprint</title>
-  <meta name="description" content="Roadmap from Form 5 to OSCP: PLAN + PRACTICE." />
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>ADLEQP Roadmap — PLAN & PRACTICE</title>
+  <meta name="description" content="ADLEQP Roadmap: PLAN + PRACTICE (Skid → OSCP) with saved notes and progress tracking." />
+
   <style>
     :root{
-      --bg0:#070A10;
-      --bg1:#0B1220;
-      --card:#0F1A2E;
-      --card2:#0C1628;
-      --text:#EAF0FF;
-      --muted:#A7B2D6;
-      --line:rgba(255,255,255,.10);
-      --brand:#6EE7FF;
+      --bg0:#080A18;
+      --bg1:#0B0F2A;
+      --card: rgba(255,255,255,.06);
+      --card2: rgba(255,255,255,.04);
+      --line: rgba(255,255,255,.12);
+      --text:#EEF2FF;
+      --muted:#A9B2D8;
+      --brand:#7DD3FC;
       --brand2:#A78BFA;
       --ok:#34D399;
       --warn:#FBBF24;
       --bad:#FB7185;
-      --shadow: 0 18px 60px rgba(0,0,0,.45);
-      --radius: 18px;
-      --radius2: 26px;
+      --shadow: 0 22px 80px rgba(0,0,0,.45);
+      --r:18px;
+      --r2:26px;
       --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
       --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
     }
+
     *{ box-sizing:border-box; }
     html,body{ height:100%; }
     body{
       margin:0;
       font-family:var(--sans);
-      background:
-        radial-gradient(1100px 600px at 15% 15%, rgba(110,231,255,.18), transparent 55%),
-        radial-gradient(900px 520px at 85% 25%, rgba(167,139,250,.18), transparent 55%),
-        radial-gradient(900px 700px at 50% 95%, rgba(52,211,153,.10), transparent 60%),
-        linear-gradient(180deg, var(--bg0), var(--bg1));
       color:var(--text);
-      letter-spacing:.2px;
       overflow-x:hidden;
+      background:
+        radial-gradient(780px 500px at 18% 20%, rgba(125,211,252,.18), transparent 55%),
+        radial-gradient(900px 520px at 80% 22%, rgba(167,139,250,.18), transparent 55%),
+        radial-gradient(1200px 700px at 50% 120%, rgba(52,211,153,.10), transparent 60%),
+        linear-gradient(180deg, var(--bg0), var(--bg1));
     }
+
+    /* floating bubbles like screenshot */
+    .bubbles{
+      position:fixed; inset:0; pointer-events:none; z-index:0; opacity:.75;
+      filter: blur(.2px);
+    }
+    .bubble{
+      position:absolute;
+      width:140px; height:140px; border-radius:999px;
+      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.7), rgba(255,255,255,.08) 45%, rgba(255,255,255,0) 70%),
+                  linear-gradient(135deg, rgba(125,211,252,.35), rgba(167,139,250,.30));
+      border: 1px solid rgba(255,255,255,.10);
+      box-shadow: 0 24px 80px rgba(0,0,0,.35);
+      opacity:.55;
+    }
+    .bubble.b1{ left:-30px; top:140px; width:170px; height:170px; }
+    .bubble.b2{ right:-55px; top:180px; width:210px; height:210px; opacity:.45; }
+    .bubble.b3{ right:80px; top:120px; width:52px; height:52px; opacity:.50; }
+    .bubble.b4{ right:56px; top:220px; width:36px; height:36px; opacity:.45; }
+    .bubble.b5{ left:120px; bottom:40px; width:60px; height:60px; opacity:.22; }
+
     a{ color:inherit; text-decoration:none; }
-    .wrap{ max-width:1100px; margin:0 auto; padding:28px 18px 64px; }
+    .wrap{ max-width:1120px; margin:0 auto; padding:22px 16px 70px; position:relative; z-index:1; }
+
+    /* topbar */
     .topbar{
-      display:flex; align-items:center; justify-content:space-between;
-      gap:14px;
       position:sticky; top:0; z-index:20;
-      background: linear-gradient(180deg, rgba(7,10,16,.92), rgba(7,10,16,.55));
+      display:flex; align-items:center; justify-content:space-between;
+      gap:12px; padding:12px 16px;
+      background: linear-gradient(180deg, rgba(8,10,24,.92), rgba(8,10,24,.55));
+      border-bottom:1px solid rgba(255,255,255,.10);
       backdrop-filter: blur(14px);
-      border-bottom:1px solid var(--line);
-      padding:14px 18px;
     }
     .brand{
-      display:flex; align-items:center; gap:12px; min-width:220px;
+      display:flex; align-items:center; gap:12px; min-width:240px;
     }
     .logo{
-      width:40px; height:40px; border-radius:14px;
+      width:42px; height:42px; border-radius:16px;
       background:
-        radial-gradient(12px 12px at 30% 30%, rgba(255,255,255,.75), transparent 60%),
-        linear-gradient(135deg, rgba(110,231,255,.85), rgba(167,139,250,.85));
-      box-shadow: 0 18px 50px rgba(110,231,255,.15);
-      border:1px solid rgba(255,255,255,.10);
+        radial-gradient(12px 12px at 30% 30%, rgba(255,255,255,.72), transparent 60%),
+        linear-gradient(135deg, rgba(125,211,252,.9), rgba(167,139,250,.9));
+      border:1px solid rgba(255,255,255,.12);
+      box-shadow: 0 18px 60px rgba(125,211,252,.15);
     }
-    .brand h1{
-      font-size:14px; margin:0; line-height:1.1;
-      letter-spacing:.8px; text-transform:uppercase;
-    }
+    .brand h1{ margin:0; font-size:14px; letter-spacing:.9px; text-transform:uppercase; }
     .brand p{ margin:2px 0 0; font-size:12px; color:var(--muted); }
+
     .nav{
       display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end;
     }
     .chip{
       padding:10px 12px;
-      border:1px solid var(--line);
       border-radius:999px;
+      border:1px solid rgba(255,255,255,.12);
       background: rgba(255,255,255,.03);
-      font-size:13px;
       color:var(--muted);
-      display:inline-flex; align-items:center; gap:8px;
-      transition: transform .15s ease, border-color .15s ease, background .15s ease;
+      font-size:13px;
       cursor:pointer;
       user-select:none;
+      transition: transform .14s ease, border-color .14s ease, background .14s ease;
+      display:inline-flex; align-items:center; gap:8px;
     }
-    .chip:hover{ transform: translateY(-1px); border-color: rgba(110,231,255,.35); background: rgba(110,231,255,.06); }
-    .chip.active{ color:var(--text); border-color: rgba(110,231,255,.55); background: rgba(110,231,255,.10); }
+    .chip:hover{ transform: translateY(-1px); border-color: rgba(125,211,252,.42); background: rgba(125,211,252,.08); color:var(--text); }
+    .chip.active{ border-color: rgba(125,211,252,.58); background: rgba(125,211,252,.12); color:var(--text); }
 
+    /* header center title like screenshot */
     .hero{
-      margin-top:28px;
-      border-radius: var(--radius2);
-      padding:28px 22px;
-      background:
-        linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02)),
-        radial-gradient(900px 400px at 10% 20%, rgba(110,231,255,.12), transparent 55%),
-        radial-gradient(900px 420px at 90% 25%, rgba(167,139,250,.10), transparent 55%),
-        rgba(255,255,255,.02);
-      border:1px solid var(--line);
+      margin-top:18px;
+      border-radius: var(--r2);
+      border:1px solid rgba(255,255,255,.10);
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
       box-shadow: var(--shadow);
-      position:relative;
       overflow:hidden;
     }
-    .hero .grid{
-      display:grid;
-      grid-template-columns: 1.4fr .9fr;
-      gap:18px;
-      align-items:stretch;
+    .heroTop{
+      padding:18px 18px 10px;
+      display:flex; align-items:flex-start; justify-content:space-between; gap:14px;
     }
-    @media (max-width: 920px){
-      .hero .grid{ grid-template-columns: 1fr; }
-    }
-    .kicker{
+    .titleBlock{ text-align:center; width:100%; }
+    .titleBlock .kicker{
       font-family:var(--mono);
-      color:rgba(110,231,255,.95);
       font-size:12px;
-      letter-spacing:1.2px;
+      letter-spacing:1.3px;
       text-transform:uppercase;
+      color:rgba(125,211,252,.92);
+      margin-bottom:6px;
     }
-    .hero h2{
-      margin:10px 0 10px;
-      font-size:28px;
-      line-height:1.12;
+    .titleBlock h2{
+      margin:0;
+      font-size:22px;
       letter-spacing:.2px;
     }
-    .hero p{
-      margin:0;
+    .titleBlock p{
+      margin:8px auto 0;
+      max-width:85ch;
       color:var(--muted);
-      font-size:14px;
-      line-height:1.55;
-      max-width:72ch;
+      font-size:13px;
+      line-height:1.6;
     }
-    .statbar{
-      display:flex; gap:10px; flex-wrap:wrap;
-      margin-top:16px;
+
+    .heroBottom{
+      padding:0 18px 18px;
+      display:flex; align-items:center; justify-content:space-between;
+      gap:12px; flex-wrap:wrap;
     }
     .pill{
       padding:10px 12px;
-      border-radius: 999px;
-      border:1px solid var(--line);
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.12);
       background: rgba(255,255,255,.03);
-      color: var(--muted);
+      color:var(--muted);
       font-size:13px;
       display:inline-flex; align-items:center; gap:8px;
     }
-    .dot{ width:8px; height:8px; border-radius:50%; background: var(--brand); box-shadow: 0 0 0 4px rgba(110,231,255,.10); }
+    .dot{ width:8px; height:8px; border-radius:50%; background: var(--brand); box-shadow: 0 0 0 4px rgba(125,211,252,.12); }
     .dot.p{ background: var(--brand2); box-shadow: 0 0 0 4px rgba(167,139,250,.12); }
     .dot.g{ background: var(--ok); box-shadow: 0 0 0 4px rgba(52,211,153,.12); }
 
-    .panel{
-      border-radius: var(--radius);
-      border:1px solid var(--line);
-      background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
-      padding:16px;
-      display:flex;
-      flex-direction:column;
-      gap:12px;
+    .progressWrap{
+      display:flex; align-items:center; gap:10px; flex-wrap:wrap;
     }
-    .panel h3{ margin:0; font-size:14px; letter-spacing:.5px; text-transform:uppercase; color:rgba(255,255,255,.85); }
-    .progress{
-      width:100%;
-      height:12px;
+    .progressBar{
+      width:220px; height:12px;
       border-radius:999px;
-      background: rgba(255,255,255,.06);
-      border:1px solid rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.05);
       overflow:hidden;
     }
-    .progress > div{
+    .progressBar > div{
       height:100%;
       width:0%;
-      background: linear-gradient(90deg, rgba(110,231,255,.95), rgba(167,139,250,.95));
+      background: linear-gradient(90deg, rgba(125,211,252,.95), rgba(167,139,250,.95));
       border-radius:999px;
       transition: width .25s ease;
     }
-    .row{
-      display:flex; align-items:center; justify-content:space-between; gap:10px;
-      flex-wrap:wrap;
+    .badge{
+      font-family:var(--mono);
+      font-size:12px;
+      padding:8px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.03);
+      color:rgba(255,255,255,.90);
+      white-space:nowrap;
     }
-    .small{ font-size:12px; color:var(--muted); }
-    .btns{
-      display:flex; gap:10px; flex-wrap:wrap;
+
+    /* sections */
+    .content{ margin-top:16px; }
+    .panel{
+      border-radius: var(--r2);
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      box-shadow: 0 10px 40px rgba(0,0,0,.25);
+      overflow:hidden;
     }
+    .panelHead{
+      padding:16px 18px;
+      border-bottom:1px solid rgba(255,255,255,.10);
+      display:flex; align-items:flex-start; justify-content:space-between; gap:12px;
+      background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
+    }
+    .panelHead h3{ margin:0; font-size:16px; letter-spacing:.3px; }
+    .panelHead p{ margin:7px 0 0; color:var(--muted); font-size:13px; line-height:1.55; max-width:90ch; }
+    .panelBody{ padding:18px; }
+
+    /* ROADMAP timeline */
+    .roadmap{
+      position:relative;
+      margin-top:8px;
+      padding:22px 10px 6px;
+    }
+    .roadLine{
+      height:2px;
+      background: linear-gradient(90deg, rgba(125,211,252,.85), rgba(167,139,250,.65), rgba(52,211,153,.45));
+      border-radius:99px;
+      opacity:.9;
+      margin:22px 10px 28px;
+    }
+    .nodes{
+      display:grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap:12px;
+      position:relative;
+      margin-top:-64px;
+      padding:0 10px;
+    }
+    @media (max-width: 980px){
+      .nodes{ grid-template-columns: 1fr; margin-top:0; }
+      .roadLine{ display:none; }
+      .roadmap{ padding-top:8px; }
+    }
+
+    .node{
+      border-radius: var(--r);
+      border:1px solid rgba(255,255,255,.10);
+      background: radial-gradient(600px 220px at 30% 0%, rgba(125,211,252,.10), transparent 55%),
+                  radial-gradient(600px 220px at 75% 0%, rgba(167,139,250,.09), transparent 55%),
+                  rgba(255,255,255,.03);
+      padding:14px;
+      position:relative;
+      min-height: 170px;
+    }
+    .nodeTop{
+      display:flex; align-items:flex-start; justify-content:space-between; gap:10px;
+    }
+    .nodeDot{
+      width:14px; height:14px; border-radius:50%;
+      background: var(--brand);
+      border:1px solid rgba(255,255,255,.18);
+      box-shadow: 0 0 0 6px rgba(125,211,252,.10);
+      flex:0 0 auto;
+      margin-top:3px;
+    }
+    .nodeDot.p{ background: var(--brand2); box-shadow: 0 0 0 6px rgba(167,139,250,.10); }
+    .nodeDot.g{ background: var(--ok); box-shadow: 0 0 0 6px rgba(52,211,153,.10); }
+
+    .node h4{ margin:0; font-size:14px; letter-spacing:.2px; }
+    .node .date{
+      font-family:var(--mono);
+      font-size:12px;
+      color:rgba(255,255,255,.85);
+      opacity:.9;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.03);
+      padding:6px 8px;
+      border-radius:999px;
+      white-space:nowrap;
+    }
+    .node p{ margin:10px 0 0; color:var(--muted); font-size:13px; line-height:1.55; }
+
+    .bullets{ margin:10px 0 0; padding-left:18px; color:var(--muted); font-size:13px; line-height:1.55; }
+    .bullets li{ margin:6px 0; }
+
+    .nodeActions{
+      margin-top:12px;
+      display:flex; gap:10px; flex-wrap:wrap; align-items:center;
+    }
+
     .btn{
       padding:10px 12px;
-      border-radius: 12px;
+      border-radius: 14px;
       border:1px solid rgba(255,255,255,.12);
       background: rgba(255,255,255,.04);
       color:var(--text);
       cursor:pointer;
       font-size:13px;
-      transition: transform .15s ease, border-color .15s ease, background .15s ease;
       user-select:none;
+      transition: transform .14s ease, border-color .14s ease, background .14s ease;
     }
-    .btn:hover{ transform: translateY(-1px); border-color: rgba(110,231,255,.45); background: rgba(110,231,255,.08); }
+    .btn:hover{ transform: translateY(-1px); border-color: rgba(125,211,252,.45); background: rgba(125,211,252,.08); }
     .btn.secondary:hover{ border-color: rgba(167,139,250,.45); background: rgba(167,139,250,.08); }
     .btn.danger:hover{ border-color: rgba(251,113,133,.55); background: rgba(251,113,133,.10); }
     .btn:active{ transform: translateY(0); }
 
-    .content{
-      margin-top:18px;
-      display:grid;
-      grid-template-columns: 1fr;
-      gap:16px;
-    }
-    .section{
-      border:1px solid var(--line);
-      border-radius: var(--radius2);
-      background: rgba(255,255,255,.02);
-      overflow:hidden;
-      box-shadow: 0 12px 40px rgba(0,0,0,.25);
-    }
-    .sectionHeader{
-      padding:18px 18px 14px;
-      display:flex;
-      align-items:flex-start;
-      justify-content:space-between;
-      gap:14px;
-      border-bottom:1px solid var(--line);
-      background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
-    }
-    .sectionHeader h3{
-      margin:0;
-      font-size:16px;
-      letter-spacing:.4px;
-    }
-    .sectionHeader p{
-      margin:6px 0 0;
-      color:var(--muted);
-      font-size:13px;
-      line-height:1.5;
-      max-width:82ch;
-    }
-    .badge{
-      font-family:var(--mono);
-      font-size:12px;
-      color: rgba(255,255,255,.90);
-      border:1px solid rgba(255,255,255,.12);
+    .check{
+      display:inline-flex; align-items:center; gap:8px;
       padding:8px 10px;
       border-radius:999px;
+      border:1px solid rgba(255,255,255,.12);
       background: rgba(255,255,255,.03);
-      white-space:nowrap;
-    }
-    .sectionBody{ padding:16px 18px 18px; }
-
-    .grid2{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap:14px;
-    }
-    @media (max-width: 920px){
-      .grid2{ grid-template-columns: 1fr; }
-    }
-
-    .card{
-      border:1px solid rgba(255,255,255,.10);
-      border-radius: var(--radius);
-      background:
-        radial-gradient(650px 240px at 20% 0%, rgba(110,231,255,.08), transparent 50%),
-        radial-gradient(650px 240px at 80% 0%, rgba(167,139,250,.07), transparent 52%),
-        rgba(255,255,255,.03);
-      padding:14px;
-      min-height: 140px;
-    }
-    .card h4{ margin:0; font-size:14px; letter-spacing:.3px; }
-    .card p{ margin:8px 0 0; color:var(--muted); font-size:13px; line-height:1.55; }
-    .card .meta{
-      margin-top:12px;
-      display:flex; gap:10px; flex-wrap:wrap;
       color:var(--muted);
       font-size:12px;
-      font-family:var(--mono);
-    }
-    .meta span{
-      padding:6px 8px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.03);
-    }
-
-    .timeline{
-      position:relative;
-      padding-left:18px;
-      display:flex;
-      flex-direction:column;
-      gap:12px;
-    }
-    .timeline:before{
-      content:"";
-      position:absolute;
-      left:6px; top:6px; bottom:6px;
-      width:2px;
-      background: linear-gradient(180deg, rgba(110,231,255,.70), rgba(167,139,250,.55), rgba(52,211,153,.35));
-      opacity:.8;
-      border-radius:99px;
-    }
-    .step{
-      position:relative;
-      padding:12px 12px 12px 14px;
-      border-radius:16px;
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.03);
-    }
-    .step:before{
-      content:"";
-      position:absolute;
-      left:-18px;
-      top:16px;
-      width:12px; height:12px;
-      border-radius:50%;
-      background: var(--brand);
-      box-shadow: 0 0 0 4px rgba(110,231,255,.12);
-      border:1px solid rgba(255,255,255,.15);
-    }
-    .step.p:before{ background: var(--brand2); box-shadow: 0 0 0 4px rgba(167,139,250,.12); }
-    .step.g:before{ background: var(--ok); box-shadow: 0 0 0 4px rgba(52,211,153,.12); }
-    .step h5{ margin:0; font-size:14px; }
-    .step p{ margin:8px 0 0; color:var(--muted); font-size:13px; line-height:1.55; }
-    .step ul{ margin:10px 0 0; padding-left:18px; color:var(--muted); font-size:13px; line-height:1.55; }
-    .step li{ margin:6px 0; }
-
-    .divider{
-      margin:14px 0;
-      height:1px;
-      background: var(--line);
-      border:0;
-    }
-
-    .checklist{
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-    }
-    .item{
-      display:flex; gap:12px; align-items:flex-start;
-      border:1px solid rgba(255,255,255,.10);
-      border-radius:16px;
-      background: rgba(255,255,255,.03);
-      padding:12px;
-    }
-    .box{
-      width:20px; height:20px;
-      border-radius:7px;
-      border:1px solid rgba(255,255,255,.20);
-      background: rgba(255,255,255,.03);
-      display:grid; place-items:center;
-      margin-top:1px;
-      flex:0 0 auto;
       cursor:pointer;
       user-select:none;
+      transition: .14s ease;
     }
-    .box svg{ width:14px; height:14px; opacity:0; transform: scale(.9); transition: .12s ease; }
-    .item.done{
-      border-color: rgba(52,211,153,.35);
-      background: rgba(52,211,153,.06);
-    }
-    .item.done .box{
+    .check:hover{ border-color: rgba(52,211,153,.45); background: rgba(52,211,153,.08); color:var(--text); }
+    .check.done{
       border-color: rgba(52,211,153,.55);
       background: rgba(52,211,153,.12);
+      color:rgba(255,255,255,.92);
     }
-    .item.done .box svg{ opacity:1; transform: scale(1); }
-    .itext{ flex:1; }
-    .itext b{ display:block; font-size:13px; }
-    .itext span{ display:block; margin-top:6px; color:var(--muted); font-size:13px; line-height:1.55; }
-    .tagrow{ display:flex; gap:8px; flex-wrap:wrap; margin-top:10px; }
-    .tag{
-      font-size:12px;
-      padding:6px 8px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,.10);
+    .check .tick{
+      width:18px; height:18px; border-radius:8px;
+      border:1px solid rgba(255,255,255,.18);
       background: rgba(255,255,255,.03);
-      color: var(--muted);
-      font-family: var(--mono);
+      display:grid; place-items:center;
     }
+    .check.done .tick{
+      border-color: rgba(52,211,153,.65);
+      background: rgba(52,211,153,.18);
+    }
+    .check svg{ width:13px; height:13px; opacity:0; transform: scale(.9); transition:.12s ease; }
+    .check.done svg{ opacity:1; transform: scale(1); }
 
-    .twoCol{
+    /* NOTES modal */
+    .modalBackdrop{
+      position:fixed; inset:0; z-index:50;
+      background: rgba(0,0,0,.55);
+      backdrop-filter: blur(8px);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding:18px;
+    }
+    .modalBackdrop.show{ display:flex; }
+    .modal{
+      width:min(980px, 100%);
+      border-radius: var(--r2);
+      border:1px solid rgba(255,255,255,.12);
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .modalHead{
+      padding:14px 16px;
+      border-bottom:1px solid rgba(255,255,255,.10);
+      display:flex; align-items:center; justify-content:space-between; gap:10px;
+      background: rgba(255,255,255,.03);
+    }
+    .modalHead h4{ margin:0; font-size:14px; letter-spacing:.3px; }
+    .modalBody{ padding:14px 16px 16px; }
+    .fields{
       display:grid;
-      grid-template-columns: 1.2fr .8fr;
-      gap:14px;
+      grid-template-columns: 1fr 1fr;
+      gap:12px;
     }
     @media (max-width: 920px){
-      .twoCol{ grid-template-columns: 1fr; }
+      .fields{ grid-template-columns: 1fr; }
     }
-
-    .note{
-      padding:12px 14px;
-      border-radius:16px;
+    .field{
       border:1px solid rgba(255,255,255,.10);
       background: rgba(255,255,255,.03);
-      color: var(--muted);
-      font-size:13px;
-      line-height:1.6;
+      border-radius: 16px;
+      padding:12px;
     }
-    .note b{ color: rgba(255,255,255,.90); }
-
+    .field label{
+      display:flex; align-items:center; justify-content:space-between;
+      gap:10px;
+      font-size:12px;
+      color:rgba(255,255,255,.88);
+      letter-spacing:.4px;
+      text-transform:uppercase;
+      margin-bottom:10px;
+      font-family: var(--mono);
+    }
+    .field textarea{
+      width:100%;
+      min-height: 160px;
+      resize: vertical;
+      border-radius: 14px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(10,12,30,.55);
+      color: var(--text);
+      padding:10px 10px;
+      font-size:13px;
+      line-height:1.55;
+      outline:none;
+    }
+    .field textarea:focus{
+      border-color: rgba(125,211,252,.55);
+      box-shadow: 0 0 0 4px rgba(125,211,252,.10);
+    }
+    .small{
+      font-size:12px;
+      color:var(--muted);
+      line-height:1.55;
+    }
     .footer{
-      margin-top:16px;
-      padding-top:16px;
-      border-top:1px solid var(--line);
+      margin-top:14px;
+      padding-top:14px;
+      border-top:1px solid rgba(255,255,255,.10);
+      display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap;
       color:var(--muted);
       font-size:12px;
-      display:flex;
-      justify-content:space-between;
-      gap:10px;
-      flex-wrap:wrap;
     }
-    .mono{ font-family:var(--mono); }
-    .hide{ display:none !important; }
     .kbd{
       font-family:var(--mono);
       font-size:12px;
@@ -415,15 +418,24 @@
       background: rgba(255,255,255,.03);
       color: rgba(255,255,255,.85);
     }
+    .hide{ display:none !important; }
   </style>
 </head>
 
 <body>
+  <div class="bubbles" aria-hidden="true">
+    <div class="bubble b1"></div>
+    <div class="bubble b2"></div>
+    <div class="bubble b3"></div>
+    <div class="bubble b4"></div>
+    <div class="bubble b5"></div>
+  </div>
+
   <div class="topbar">
     <div class="brand">
-      <div class="logo" aria-hidden="true"></div>
+      <div class="logo"></div>
       <div>
-        <h1>ADLEQP Blueprint</h1>
+        <h1>ADLEQP Roadmap</h1>
         <p>#tcosampaimampos • PLAN & PRACTICE</p>
       </div>
     </div>
@@ -431,461 +443,336 @@
     <div class="nav" role="navigation" aria-label="Primary">
       <div class="chip active" data-tab="plan">📌 PLAN</div>
       <div class="chip" data-tab="practice">🧪 PRACTICE</div>
+      <div class="chip" id="notesBtn">📝 Notes</div>
       <div class="chip" id="exportBtn">⬇ Export</div>
       <div class="chip" id="resetBtn">🧼 Reset</div>
     </div>
   </div>
 
   <div class="wrap">
-    <section class="hero" aria-label="Header">
-      <div class="grid">
-        <div>
-          <div class="kicker">Malaysia • Form 5 → OSCP • Pentest Focus</div>
-          <h2>From “skid” → OSCP-ready, with a real system.</h2>
+    <section class="hero">
+      <div class="heroTop">
+        <div class="titleBlock">
+          <div class="kicker">Malaysia • Form 5 → OSCP • Professional Roadmap</div>
+          <h2>Company Roadmap (Your Cybersecurity Journey)</h2>
           <p>
-            This blueprint is built for your goals: <span class="mono">APU / UTM / UiTM</span> → certifications →
-            <span class="mono">LGMS / CyberSecurity Malaysia / Securemetric</span> → Penetration Tester (dream) + Threat Hunting + Security Engineering.
-            Everything is legal, lab-based, and designed to build real competence (not tool spam).
+            Simple view: <span style="font-family:var(--mono)">PLAN</span> is the timeline of your future.
+            <span style="font-family:var(--mono)">PRACTICE</span> is the weekly training system that transforms you from “skid” to OSCP-ready.
           </p>
-
-          <div class="statbar">
-            <div class="pill"><span class="dot"></span> Primary: Penetration Tester</div>
-            <div class="pill"><span class="dot p"></span> Secondary: Threat Hunter</div>
-            <div class="pill"><span class="dot g"></span> Freelancer: Bug Bounty</div>
-          </div>
         </div>
-
-        <div class="panel" aria-label="Progress panel">
-          <div class="row">
-            <h3>Progress</h3>
-            <div class="badge" id="progressLabel">0% complete</div>
-          </div>
-          <div class="progress" aria-label="Progress bar"><div id="progressBar"></div></div>
-          <div class="row">
-            <div class="small">Your checkmarks are saved locally in this browser.</div>
-            <div class="btns">
-              <button class="btn" id="jumpPlan">Go PLAN</button>
-              <button class="btn secondary" id="jumpPractice">Go PRACTICE</button>
-            </div>
-          </div>
-
-          <hr class="divider" />
-
-          <div class="note">
-            <b>Ethics rule:</b> Practice only in your own lab + legal training platforms.
-            Never attack real systems without written permission.
-            <div style="margin-top:10px;">
-              Tip: press <span class="kbd">P</span> to switch PLAN / PRACTICE.
-            </div>
-          </div>
+      </div>
+      <div class="heroBottom">
+        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+          <div class="pill"><span class="dot"></span> Dream Role: Penetration Tester</div>
+          <div class="pill"><span class="dot p"></span> Backup: Threat Hunter / Sec Engineer</div>
+          <div class="pill"><span class="dot g"></span> Side: Bug Bounty (freelance)</div>
+        </div>
+        <div class="progressWrap" aria-label="Progress">
+          <div class="badge" id="progressLabel">0% complete</div>
+          <div class="progressBar"><div id="progressBarFill"></div></div>
         </div>
       </div>
     </section>
 
-    <!-- ======================= PLAN ======================= -->
+    <!-- PLAN -->
     <section class="content" id="plan">
-      <div class="section">
-        <div class="sectionHeader">
+      <div class="panel">
+        <div class="panelHead">
           <div>
-            <h3>PLAN — Master Blueprint (Form 5 → 25)</h3>
+            <h3>PLAN — Your Future Timeline</h3>
             <p>
-              This is the strategic path: what to learn, when to certify, and how to position yourself for
-              <span class="mono">LGMS / CyberSecurity Malaysia / Securemetric</span>.
+              Read this like a road trip. Each box is a phase. You only need to focus on the
+              <b>current box</b>, not everything at once.
             </p>
           </div>
-          <div class="badge">Blueprint</div>
+          <div class="badge">APU • UTM • UiTM</div>
         </div>
 
-        <div class="sectionBody">
-          <div class="twoCol">
-            <div class="timeline" aria-label="Blueprint timeline">
-              <div class="step">
-                <h5>Phase 1 (Now → SPM): Foundations + SPM performance</h5>
-                <p>Two missions only: <b>SPM</b> + <b>core fundamentals</b>. No “random hacking”.</p>
-                <ul>
-                  <li>SPM focus: Math/AddMath/English/Science (and ICT if available)</li>
-                  <li>Networking basics: OSI, TCP/IP, DNS, HTTP</li>
-                  <li>Linux fluency: permissions, users, SSH, processes</li>
-                  <li>Python basics: loops, functions, files, simple automation</li>
-                </ul>
-              </div>
-
-              <div class="step p">
-                <h5>Phase 2 (Diploma 18–20): Build serious skill + portfolio</h5>
-                <p>Diploma is where you quietly become dangerous (in a legal lab), not loud.</p>
-                <ul>
-                  <li>Year 1: Networking mastery + home lab + <b>Network+</b></li>
-                  <li>Year 2: Security foundations + web basics + <b>Security+</b></li>
-                  <li>Year 3: Internship + real reporting habits + start bug bounty (slow)</li>
-                </ul>
-              </div>
-
-              <div class="step g">
-                <h5>Phase 3 (Degree 21–23): OSCP track + professional writing</h5>
-                <p>Degree years: turn your skills into <b>proof</b>.</p>
-                <ul>
-                  <li>HR-friendly: <b>CEH</b> (optional but useful locally)</li>
-                  <li>Skill-proof: <b>OSCP</b> (main target)</li>
-                  <li>Active Directory, privesc, pivoting, clean pentest reporting</li>
-                </ul>
-              </div>
-
-              <div class="step">
-                <h5>Phase 4 (23–25): Industry entry → LGMS-ready</h5>
-                <p>First job can be SOC/Junior Security → then pivot into Pentest / Threat.</p>
-                <ul>
-                  <li>Job entry: SOC Analyst / Junior Security / Junior Pentester</li>
-                  <li>Build reputation: writeups, clean GitHub, communication</li>
-                  <li>Apply: LGMS pentest roles + keep bug bounty as side learning</li>
-                </ul>
-              </div>
-            </div>
-
-            <div>
-              <div class="card">
-                <h4>Your Target Stack (What you’ll be known for)</h4>
-                <p>
-                  Not “tool user”. A professional who understands systems, can exploit manually in a lab,
-                  and can explain risk like a consultant.
-                </p>
-                <div class="meta">
-                  <span>Networking</span><span>Linux</span><span>Python</span><span>Web Security</span>
-                  <span>Active Directory</span><span>Reporting</span><span>Communication</span>
-                </div>
-              </div>
-
-              <div style="height:12px"></div>
-
-              <div class="card">
-                <h4>University Targets (Your list)</h4>
-                <p>Diploma → Degree. Choose based on finances + learning style, but your skills decide the outcome.</p>
-                <div class="meta">
-                  <span>APU</span><span>UTM</span><span>UiTM</span>
-                </div>
-              </div>
-
-              <div style="height:12px"></div>
-
-              <div class="card">
-                <h4>Company Targets (Your list)</h4>
-                <p>Build a portfolio that matches what these places value: discipline, depth, and clean reports.</p>
-                <div class="meta">
-                  <span>LGMS Global</span><span>CyberSecurity Malaysia</span><span>Securemetric</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <hr class="divider" />
-
-          <div class="grid2">
-            <div class="card">
-              <h4>Weekly Schedule (Form 5 version)</h4>
-              <p><b>Mon–Fri (≈ 3 hours total):</b></p>
-              <p class="mono" style="margin-top:10px; color:rgba(234,240,255,.92);">
-                1h SPM (Math/AddMath/English) <br/>
-                45m Networking <br/>
-                30m Linux <br/>
-                45m Python
-              </p>
-              <p style="margin-top:10px;">
-                <b>Saturday (4–5h):</b> 2h TryHackMe + 1h notes + 1h build something + 30m reading.<br/>
-                <b>Sunday (2–3h):</b> revise weak points + tidy notes + plan next week.
-              </p>
-            </div>
-
-            <div class="card">
-              <h4>Milestones (Next 12 months — simple & real)</h4>
-              <p>Use these as “north star” targets while you finish SPM and prep for diploma.</p>
-              <div class="meta">
-                <span>Month 1–2: Networking basics</span>
-                <span>Month 1–3: Python basics</span>
-                <span>Month 2–4: Linux fluency</span>
-                <span>Month 3–6: Web basics (OWASP)</span>
-                <span>Month 6–12: consistent labs + notes</span>
-              </div>
-              <p style="margin-top:10px;">
-                Your advantage is consistency. Most people “start” 50 times and finish 0.
-              </p>
-            </div>
+        <div class="panelBody">
+          <div class="roadmap">
+            <div class="roadLine"></div>
+            <div class="nodes" id="planNodes"></div>
           </div>
 
           <div class="footer">
-            <div>Contact: <span class="mono">telegram @adleqp</span></div>
-            <div>Donation: <span class="mono">hao.paypal.ig@gmail.com</span></div>
+            <div>Contact: <span style="font-family:var(--mono)">telegram @adleqp</span></div>
+            <div>Donation: <span style="font-family:var(--mono)">hao.paypal.ig@gmail.com</span></div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ======================= PRACTICE ======================= -->
+    <!-- PRACTICE -->
     <section class="content hide" id="practice">
-      <div class="section">
-        <div class="sectionHeader">
+      <div class="panel">
+        <div class="panelHead">
           <div>
-            <h3>PRACTICE — “Skid → OSCP” Transformation Activities</h3>
+            <h3>PRACTICE — Skid → OSCP (Training Roadmap)</h3>
             <p>
-              This is your day-to-day transformation: what to practice (legally), what to build, and how to prove growth.
-              Check items off, track progress, export your data.
+              This is the simple “skill ladder”. You climb it step-by-step.
+              Each step has a weekly activity you repeat until it becomes easy.
             </p>
           </div>
-          <div class="badge">Training System</div>
+          <div class="badge">TryHackMe • PortSwigger • Lab</div>
         </div>
 
-        <div class="sectionBody">
-          <div class="grid2">
-            <div class="card">
-              <h4>Rules of Practice (Non-negotiable)</h4>
-              <p>
-                <b>Only legal environments:</b> your own lab, TryHackMe, PortSwigger Academy, Hack The Box (legal boxes).
-                No attacking real sites without written permission.
-              </p>
-              <div class="meta">
-                <span>Lab only</span><span>Ethics</span><span>Writeups</span><span>Consistency</span>
-              </div>
-              <p style="margin-top:10px;">
-                OSCP isn’t about being “cool”. It’s about problem-solving under pressure + clean reporting.
-              </p>
-            </div>
-
-            <div class="card">
-              <h4>What “Skid → Pro” looks like</h4>
-              <p>
-                <b>Skid:</b> runs tools, copies commands, can’t explain results.<br/>
-                <b>Pro:</b> explains the network flow, reproduces manually, writes a report the client understands.
-              </p>
-              <div class="meta">
-                <span>Explain</span><span>Reproduce</span><span>Document</span><span>Improve</span>
-              </div>
-              <p style="margin-top:10px;">
-                Your mission: become the person who can explain <b>why</b>, not only <b>how</b>.
-              </p>
-            </div>
-          </div>
-
-          <hr class="divider" />
-
-          <div class="grid2">
-            <div>
-              <h4 style="margin:0 0 10px;">Core Practice Checklist (Start Now)</h4>
-              <div class="checklist" id="listCore"></div>
-            </div>
-            <div>
-              <h4 style="margin:0 0 10px;">OSCP Prep Checklist (Build toward this)</h4>
-              <div class="checklist" id="listOSCP"></div>
-            </div>
-          </div>
-
-          <hr class="divider" />
-
-          <div class="grid2">
-            <div class="card">
-              <h4>Weekly Practice Template (repeat forever)</h4>
-              <p class="mono" style="color:rgba(234,240,255,.92);">
-                Mon: Networking + notes (45m) + Python (45m) <br/>
-                Tue: Linux drills (30m) + Web theory (45m) + SPM (1h) <br/>
-                Wed: TryHackMe room (60–90m) + write mini-summary <br/>
-                Thu: Python build (script) + GitHub push <br/>
-                Fri: Review week + fix weak points <br/>
-                Sat: Deep lab day (4–5h) <br/>
-                Sun: Light review + plan next week
-              </p>
-              <p style="margin-top:10px;">
-                The “secret”: <b>write one paragraph</b> after every lab. That habit makes you employable.
-              </p>
-            </div>
-
-            <div class="card">
-              <h4>Portfolio Rules (to impress LGMS)</h4>
-              <p>
-                Keep it professional:
-              </p>
-              <div class="meta">
-                <span>Clean GitHub</span><span>Writeups</span><span>Reports</span><span>CTFs</span>
-              </div>
-              <p style="margin-top:10px;">
-                Suggested repo structure:
-                <span class="mono">/notes</span>, <span class="mono">/scripts</span>, <span class="mono">/writeups</span>, <span class="mono">/reports</span>.
-                No illegal targets. No “I hacked X” claims.
-              </p>
-            </div>
+        <div class="panelBody">
+          <div class="roadmap">
+            <div class="roadLine"></div>
+            <div class="nodes" id="practiceNodes"></div>
           </div>
 
           <div class="footer">
-            <div>Tip: use <span class="kbd">P</span> to switch sections quickly.</div>
-            <div class="mono">Progress saved in localStorage</div>
+            <div>Shortcut: Press <span class="kbd">P</span> to switch PLAN/PRACTICE</div>
+            <div>Notes & progress saved in your browser</div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Hidden download anchor -->
+    <!-- download anchor -->
     <a id="dl" class="hide"></a>
+  </div>
+
+  <!-- NOTES MODAL -->
+  <div class="modalBackdrop" id="modalBackdrop" role="dialog" aria-modal="true" aria-label="Notes">
+    <div class="modal">
+      <div class="modalHead">
+        <h4 id="modalTitle">Notes</h4>
+        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+          <button class="btn secondary" id="modalSaveBtn">Save</button>
+          <button class="btn danger" id="modalCloseBtn">Close</button>
+        </div>
+      </div>
+      <div class="modalBody">
+        <div class="fields">
+          <div class="field">
+            <label>Global Notes <span class="small" id="globalSaved"></span></label>
+            <textarea id="notesGlobal" placeholder="Write anything: goals, reminders, resources, what you learned..."></textarea>
+          </div>
+          <div class="field">
+            <label>Section Notes (PLAN / PRACTICE) <span class="small" id="sectionSaved"></span></label>
+            <textarea id="notesSection" placeholder="Notes for the current section you’re on (PLAN or PRACTICE)."></textarea>
+          </div>
+        </div>
+
+        <div style="height:12px"></div>
+
+        <div class="field">
+          <label id="stepLabel">Step Notes <span class="small" id="stepSaved"></span></label>
+          <textarea id="notesStep" placeholder="This is for a specific roadmap step (when you click 'Step Note' on a box)."></textarea>
+          <div class="small" style="margin-top:10px;">
+            Tip: Click <b>Step Note</b> inside any roadmap box to write notes specifically for that step.
+          </div>
+        </div>
+
+        <div class="small" style="margin-top:12px;">
+          Everything saves to <span style="font-family:var(--mono)">localStorage</span>. If you clear browser data, notes will reset.
+          Use <b>Export</b> to back up your progress.
+        </div>
+      </div>
+    </div>
   </div>
 
   <script>
     // ----------------------------
-    // DATA
+    // STORAGE
     // ----------------------------
-    const STORAGE_KEY = "adleqp_blueprint_progress_v1";
+    const STORAGE_KEY = "adleqp_roadmap_v2";
 
-    const coreItems = [
-      {
-        id: "c1",
-        title: "Networking: OSI + TCP/IP basics (notes)",
-        desc: "Explain OSI layers + TCP vs UDP + ports in your own words. Build a 1-page note.",
-        tags: ["Networking","Notes","Foundation"]
-      },
-      {
-        id: "c2",
-        title: "DNS + HTTP: how the web actually works",
-        desc: "Write the full flow: URL → DNS → TCP/TLS → HTTP request/response. Bonus: what is a cookie?",
-        tags: ["Web","Networking","Basics"]
-      },
-      {
-        id: "c3",
-        title: "Linux fluency: permissions + users + SSH",
-        desc: "Practice: chmod/chown, users/groups, SSH keys, services, processes. Make a cheat sheet.",
-        tags: ["Linux","Ops","Foundation"]
-      },
-      {
-        id: "c4",
-        title: "Python: loops/functions/files (build mini tools)",
-        desc: "Build: log parser (reads a file), simple checklist CLI, small automation script. Push to GitHub.",
-        tags: ["Python","Build","GitHub"]
-      },
-      {
-        id: "c5",
-        title: "TryHackMe: 2 rooms per week (beginner path)",
-        desc: "After each room: write 5 bullets (what you learned, what confused you, what to review).",
-        tags: ["TryHackMe","Consistency","Reflection"]
-      },
-      {
-        id: "c6",
-        title: "Web security theory: OWASP Top 10 overview",
-        desc: "Learn what each OWASP item is (conceptually). Don’t chase exploits; learn the idea + defense.",
-        tags: ["OWASP","Theory","Defense"]
-      },
-      {
-        id: "c7",
-        title: "Wireshark basics: capture + filter",
-        desc: "Capture DNS + HTTP(s) traffic on your own machine. Learn basic filters: ip, tcp, dns, http.",
-        tags: ["Wireshark","Networking","Hands-on"]
-      },
-      {
-        id: "c8",
-        title: "Professional habit: write a mini report weekly",
-        desc: "One page: objective, steps taken, findings, mitigation. This skill gets you hired.",
-        tags: ["Reporting","Career","Professional"]
-      }
-    ];
-
-    const oscpItems = [
-      {
-        id: "o1",
-        title: "Build a legal home lab (VirtualBox)",
-        desc: "Kali + Windows (evaluation) + a vulnerable target VM. Document setup + networking mode.",
-        tags: ["Lab","VirtualBox","Setup"]
-      },
-      {
-        id: "o2",
-        title: "Privilege escalation fundamentals (Linux + Windows)",
-        desc: "Learn common misconfigs conceptually, and practice only in your lab or training platforms.",
-        tags: ["Privesc","OSCP","Core"]
-      },
-      {
-        id: "o3",
-        title: "Active Directory basics (concept + lab practice)",
-        desc: "Learn users/groups, Kerberos concept, basic AD enumeration in a lab. Focus on understanding.",
-        tags: ["ActiveDirectory","OSCP","Enterprise"]
-      },
-      {
-        id: "o4",
-        title: "PortSwigger Web Academy: weekly modules",
-        desc: "Practice web vulnerabilities in a legal training environment. Write short summaries.",
-        tags: ["PortSwigger","Web","Legal"]
-      },
-      {
-        id: "o5",
-        title: "CTF discipline: reproduce → explain → document",
-        desc: "For every box/room: reproduce steps without copy-paste, then explain in your own words.",
-        tags: ["CTF","Method","Growth"]
-      },
-      {
-        id: "o6",
-        title: "Report writing: executive + technical sections",
-        desc: "Practice writing like a consultant: impact, risk, reproduction steps, mitigations.",
-        tags: ["Reporting","Consulting","Career"]
-      },
-      {
-        id: "o7",
-        title: "Cert pathway planning (Diploma → Degree)",
-        desc: "Map: Network+ → Security+ → (optional CEH) → OSCP. Note prerequisites & timeline.",
-        tags: ["Certs","Planning","Malaysia"]
-      },
-      {
-        id: "o8",
-        title: "Interview readiness: explain your own projects",
-        desc: "Be able to explain your scripts, your lab, and your learning process clearly.",
-        tags: ["Interview","Communication","Career"]
-      }
-    ];
-
-    // ----------------------------
-    // STATE
-    // ----------------------------
     const state = loadState();
-
     function loadState(){
       try{
         const raw = localStorage.getItem(STORAGE_KEY);
-        if(!raw) return { done:{}, lastExport:null };
+        if(!raw) return { done:{}, notes:{ global:"", plan:"", practice:"", step:{} }, lastStep:null };
         const parsed = JSON.parse(raw);
-        if(!parsed || typeof parsed !== "object") return { done:{}, lastExport:null };
         parsed.done ||= {};
+        parsed.notes ||= { global:"", plan:"", practice:"", step:{} };
+        parsed.notes.step ||= {};
         return parsed;
       }catch{
-        return { done:{}, lastExport:null };
+        return { done:{}, notes:{ global:"", plan:"", practice:"", step:{} }, lastStep:null };
       }
     }
-
     function saveState(){
       localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
       updateProgress();
     }
 
     // ----------------------------
+    // DATA (simple, clearer)
+    // ----------------------------
+    // PLAN: future timeline boxes
+    const planSteps = [
+      {
+        id:"plan_spm",
+        dot:"brand",
+        date:"NOW → SPM",
+        title:"Form 5: Foundations + SPM",
+        desc:"Focus on SPM + fundamentals only. Don’t chase random tools.",
+        bullets:[
+          "SPM: Math/AddMath/English/Science",
+          "Networking: OSI, TCP/IP, DNS, HTTP",
+          "Linux: permissions, users, SSH",
+          "Python: basics + small automation",
+        ],
+      },
+      {
+        id:"plan_diploma",
+        dot:"p",
+        date:"18–20",
+        title:"Diploma: Build real skill",
+        desc:"You become strong by building a lab, writing notes, and being consistent.",
+        bullets:[
+          "Year 1: Network+ (optional), lab setup",
+          "Year 2: Security+ target, web basics",
+          "Year 3: internship + reporting habit",
+          "Start bug bounty slowly (learning, not money)"
+        ],
+      },
+      {
+        id:"plan_degree",
+        dot:"g",
+        date:"21–23",
+        title:"Degree: OSCP track",
+        desc:"Turn skill into proof: AD + privesc + clean reports.",
+        bullets:[
+          "OSCP focus: AD, privesc, pivoting",
+          "CEH optional (HR-friendly locally)",
+          "Portfolio: writeups + scripts",
+          "Communication + report writing"
+        ],
+      },
+      {
+        id:"plan_job",
+        dot:"brand",
+        date:"23–25",
+        title:"Industry: Get hired → LGMS-ready",
+        desc:"Start job, then move into Pentest/Threat hunting role.",
+        bullets:[
+          "First job: SOC / Junior Security / Junior Pentester",
+          "Targets: LGMS, CyberSecurity MY, Securemetric",
+          "Keep improving: reports + labs + certs",
+          "Bug bounty: side skill + learning"
+        ],
+      },
+    ];
+
+    // PRACTICE: skill ladder boxes (skid → OSCP)
+    const practiceSteps = [
+      {
+        id:"prac_fundamentals",
+        dot:"brand",
+        date:"Step 1",
+        title:"Fundamentals (stop being a skid)",
+        desc:"You can explain what you do. No blind copy-paste.",
+        bullets:[
+          "Learn networking basics + write notes",
+          "Linux daily drills (permissions, users, SSH)",
+          "Python basics (loops, functions, files)",
+          "2 TryHackMe beginner rooms/week + summary"
+        ],
+      },
+      {
+        id:"prac_web",
+        dot:"p",
+        date:"Step 2",
+        title:"Web Security (legal training)",
+        desc:"Web is the best starting point for bug bounty + pentesting.",
+        bullets:[
+          "PortSwigger Academy weekly modules",
+          "Understand OWASP (XSS, SQLi, IDOR, auth logic)",
+          "Practice in labs only",
+          "Write 1-page mini report each week"
+        ],
+      },
+      {
+        id:"prac_ad",
+        dot:"g",
+        date:"Step 3",
+        title:"Active Directory (enterprise skill)",
+        desc:"This is where pentesters become valuable.",
+        bullets:[
+          "Build / use an AD lab (legal)",
+          "Learn users/groups/Kerberos concept",
+          "Enumeration mindset (what to look for)",
+          "Document every attempt: what worked, what didn’t"
+        ],
+      },
+      {
+        id:"prac_oscp",
+        dot:"brand",
+        date:"Step 4",
+        title:"OSCP Method (practice like exam)",
+        desc:"You train like OSCP: method + time management + report.",
+        bullets:[
+          "Practice privesc (Windows + Linux) in labs",
+          "Write OSCP-style reports",
+          "Do mock sessions (2–4h focused)",
+          "Be able to explain every step clearly"
+        ],
+      },
+    ];
+
+    // ----------------------------
     // RENDER
     // ----------------------------
-    function renderList(el, items){
+    function renderNodes(containerId, steps){
+      const el = document.getElementById(containerId);
       el.innerHTML = "";
-      for(const it of items){
-        const row = document.createElement("div");
-        row.className = "item" + (state.done[it.id] ? " done" : "");
-        row.dataset.id = it.id;
+      for(const s of steps){
+        const node = document.createElement("div");
+        node.className = "node";
 
-        const box = document.createElement("div");
-        box.className = "box";
-        box.innerHTML = `
-          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <path d="M20 6L9 17l-5-5" stroke="white" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
+        const dotClass = s.dot === "p" ? "nodeDot p" : (s.dot === "g" ? "nodeDot g" : "nodeDot");
+        const done = !!state.done[s.id];
+
+        node.innerHTML = `
+          <div class="nodeTop">
+            <div style="display:flex; align-items:flex-start; gap:10px;">
+              <div class="${dotClass}" aria-hidden="true"></div>
+              <div>
+                <h4>${escapeHtml(s.title)}</h4>
+                <div style="margin-top:6px; color: var(--muted); font-size:12px;">
+                  ${escapeHtml(s.desc)}
+                </div>
+              </div>
+            </div>
+            <div class="date">${escapeHtml(s.date)}</div>
+          </div>
+
+          <ul class="bullets">
+            ${s.bullets.map(b => `<li>${escapeHtml(b)}</li>`).join("")}
+          </ul>
+
+          <div class="nodeActions">
+            <div class="check ${done ? "done":""}" data-id="${escapeHtml(s.id)}">
+              <div class="tick">
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M20 6L9 17l-5-5" stroke="white" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              Mark complete
+            </div>
+            <button class="btn secondary" data-note="${escapeHtml(s.id)}">Step Note</button>
+          </div>
         `;
-        box.title = "Toggle complete";
 
-        const text = document.createElement("div");
-        text.className = "itext";
-        const tags = (it.tags||[]).map(t => `<span class="tag">${escapeHtml(t)}</span>`).join("");
-        text.innerHTML = `
-          <b>${escapeHtml(it.title)}</b>
-          <span>${escapeHtml(it.desc)}</span>
-          <div class="tagrow">${tags}</div>
-        `;
+        // toggle complete
+        node.querySelector(".check").addEventListener("click", (e) => {
+          const id = e.currentTarget.getAttribute("data-id");
+          state.done[id] = !state.done[id];
+          e.currentTarget.classList.toggle("done", !!state.done[id]);
+          saveState();
+        });
 
-        box.addEventListener("click", () => toggle(it.id, row));
-        row.appendChild(box);
-        row.appendChild(text);
-        el.appendChild(row);
+        // open step note
+        node.querySelector("[data-note]").addEventListener("click", (e) => {
+          const id = e.currentTarget.getAttribute("data-note");
+          openNotesModal(id);
+        });
+
+        el.appendChild(node);
       }
     }
 
@@ -898,22 +785,6 @@
         .replaceAll("'","&#039;");
     }
 
-    function toggle(id, row){
-      state.done[id] = !state.done[id];
-      row.classList.toggle("done", !!state.done[id]);
-      saveState();
-    }
-
-    function updateProgress(){
-      const all = [...coreItems, ...oscpItems];
-      const total = all.length;
-      const done = all.filter(x => state.done[x.id]).length;
-      const pct = total ? Math.round((done/total)*100) : 0;
-
-      document.getElementById("progressBar").style.width = pct + "%";
-      document.getElementById("progressLabel").textContent = `${pct}% complete • ${done}/${total}`;
-    }
-
     // ----------------------------
     // TABS
     // ----------------------------
@@ -922,20 +793,128 @@
       document.getElementById("plan").classList.toggle("hide", name !== "plan");
       document.getElementById("practice").classList.toggle("hide", name !== "practice");
       chips.forEach(c => c.classList.toggle("active", c.dataset.tab === name));
+      // load section notes into modal (if open)
+      saveState();
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
     chips.forEach(c => c.addEventListener("click", () => setTab(c.dataset.tab)));
 
-    document.getElementById("jumpPlan").addEventListener("click", () => setTab("plan"));
-    document.getElementById("jumpPractice").addEventListener("click", () => setTab("practice"));
-
-    // Keyboard shortcut: P toggles PLAN/PRACTICE
     window.addEventListener("keydown", (e) => {
       if(e.key.toLowerCase() === "p"){
         const planVisible = !document.getElementById("plan").classList.contains("hide");
         setTab(planVisible ? "practice" : "plan");
       }
+      if(e.key.toLowerCase() === "n"){
+        openNotesModal(state.lastStep || null);
+      }
+      if(e.key === "Escape"){
+        closeModal();
+      }
     });
+
+    // ----------------------------
+    // PROGRESS
+    // ----------------------------
+    function updateProgress(){
+      const all = [...planSteps, ...practiceSteps];
+      const total = all.length;
+      const done = all.filter(x => state.done[x.id]).length;
+      const pct = total ? Math.round((done/total)*100) : 0;
+
+      document.getElementById("progressBarFill").style.width = pct + "%";
+      document.getElementById("progressLabel").textContent = `${pct}% complete • ${done}/${total}`;
+    }
+
+    // ----------------------------
+    // NOTES MODAL
+    // ----------------------------
+    const modalBackdrop = document.getElementById("modalBackdrop");
+    const notesGlobal = document.getElementById("notesGlobal");
+    const notesSection = document.getElementById("notesSection");
+    const notesStep = document.getElementById("notesStep");
+    const stepLabel = document.getElementById("stepLabel");
+    const modalTitle = document.getElementById("modalTitle");
+
+    const globalSaved = document.getElementById("globalSaved");
+    const sectionSaved = document.getElementById("sectionSaved");
+    const stepSaved = document.getElementById("stepSaved");
+
+    let currentStepId = null;
+    let saveTimer = null;
+
+    function currentTabName(){
+      return document.getElementById("plan").classList.contains("hide") ? "practice" : "plan";
+    }
+
+    function openNotesModal(stepId){
+      currentStepId = stepId || null;
+      state.lastStep = currentStepId || state.lastStep;
+
+      modalTitle.textContent = "Notes";
+      notesGlobal.value = state.notes.global || "";
+
+      const tab = currentTabName();
+      notesSection.value = state.notes[tab] || "";
+
+      if(currentStepId){
+        stepLabel.textContent = `Step Notes — ${currentStepId}`;
+        notesStep.value = state.notes.step[currentStepId] || "";
+      } else {
+        stepLabel.textContent = `Step Notes — (select a step)`;
+        notesStep.value = "";
+      }
+
+      globalSaved.textContent = "";
+      sectionSaved.textContent = "";
+      stepSaved.textContent = "";
+
+      modalBackdrop.classList.add("show");
+      // focus first field
+      notesSection.focus();
+    }
+
+    function closeModal(){
+      modalBackdrop.classList.remove("show");
+    }
+
+    function stampSaved(el){
+      const t = new Date();
+      const hh = String(t.getHours()).padStart(2,"0");
+      const mm = String(t.getMinutes()).padStart(2,"0");
+      el.textContent = `Saved ${hh}:${mm}`;
+    }
+
+    function persistNotes(){
+      state.notes.global = notesGlobal.value;
+
+      const tab = currentTabName();
+      state.notes[tab] = notesSection.value;
+
+      if(currentStepId){
+        state.notes.step[currentStepId] = notesStep.value;
+      }
+
+      saveState();
+      stampSaved(globalSaved);
+      stampSaved(sectionSaved);
+      stampSaved(stepSaved);
+    }
+
+    function scheduleAutosave(){
+      clearTimeout(saveTimer);
+      saveTimer = setTimeout(persistNotes, 450);
+    }
+
+    notesGlobal.addEventListener("input", scheduleAutosave);
+    notesSection.addEventListener("input", scheduleAutosave);
+    notesStep.addEventListener("input", scheduleAutosave);
+
+    document.getElementById("notesBtn").addEventListener("click", () => openNotesModal(state.lastStep || null));
+    document.getElementById("modalCloseBtn").addEventListener("click", closeModal);
+    modalBackdrop.addEventListener("click", (e) => {
+      if(e.target === modalBackdrop) closeModal();
+    });
+    document.getElementById("modalSaveBtn").addEventListener("click", persistNotes);
 
     // ----------------------------
     // EXPORT / RESET
@@ -944,44 +923,34 @@
       const payload = {
         exportedAt: new Date().toISOString(),
         done: state.done,
-        summary: summarize()
+        notes: state.notes
       };
       const blob = new Blob([JSON.stringify(payload, null, 2)], { type:"application/json" });
       const url = URL.createObjectURL(blob);
       const a = document.getElementById("dl");
       a.href = url;
-      a.download = "adleqp_blueprint_progress.json";
+      a.download = "adleqp_roadmap_backup.json";
       a.click();
       URL.revokeObjectURL(url);
-      state.lastExport = payload.exportedAt;
-      saveState();
     });
 
     document.getElementById("resetBtn").addEventListener("click", () => {
-      const ok = confirm("Reset all checkmarks? This only affects this browser.");
+      const ok = confirm("Reset progress + notes? (Only affects this browser)");
       if(!ok) return;
       state.done = {};
+      state.notes = { global:"", plan:"", practice:"", step:{} };
+      state.lastStep = null;
       saveState();
-      // re-render to update classes cleanly
-      renderList(document.getElementById("listCore"), coreItems);
-      renderList(document.getElementById("listOSCP"), oscpItems);
+      renderNodes("planNodes", planSteps);
+      renderNodes("practiceNodes", practiceSteps);
+      closeModal();
     });
-
-    function summarize(){
-      const all = [...coreItems, ...oscpItems];
-      const total = all.length;
-      const done = all.filter(x => state.done[x.id]).length;
-      return {
-        total, done,
-        percent: total ? Math.round((done/total)*100) : 0
-      };
-    }
 
     // ----------------------------
     // INIT
     // ----------------------------
-    renderList(document.getElementById("listCore"), coreItems);
-    renderList(document.getElementById("listOSCP"), oscpItems);
+    renderNodes("planNodes", planSteps);
+    renderNodes("practiceNodes", practiceSteps);
     updateProgress();
   </script>
 </body>
