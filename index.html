@@ -1,957 +1,582 @@
-<!-- Save as: index.html (root of adleqp.github.io repo)
-     Modern Roadmap UI + PLAN/PRACTICE + Notes (saved locally) + Export
--->
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>ADLEQP Roadmap — PLAN & PRACTICE</title>
-  <meta name="description" content="ADLEQP Roadmap: PLAN + PRACTICE (Skid → OSCP) with saved notes and progress tracking." />
-
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Matcha & Coffee</title>
   <style>
-    :root{
-      --bg0:#080A18;
-      --bg1:#0B0F2A;
-      --card: rgba(255,255,255,.06);
-      --card2: rgba(255,255,255,.04);
-      --line: rgba(255,255,255,.12);
-      --text:#EEF2FF;
-      --muted:#A9B2D8;
-      --brand:#7DD3FC;
-      --brand2:#A78BFA;
-      --ok:#34D399;
-      --warn:#FBBF24;
-      --bad:#FB7185;
-      --shadow: 0 22px 80px rgba(0,0,0,.45);
-      --r:18px;
-      --r2:26px;
-      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+    :root {
+      --green: #4f7d5a;
+      --green-dark: #2f5a3a;
+      --green-soft: #dfeee3;
+      --cream: #f8fbf7;
+      --white: #ffffff;
+      --text: #1f2a22;
+      --muted: #647067;
+      --line: #d7e4d8;
     }
 
-    *{ box-sizing:border-box; }
-    html,body{ height:100%; }
-    body{
-      margin:0;
-      font-family:var(--sans);
-      color:var(--text);
-      overflow-x:hidden;
-      background:
-        radial-gradient(780px 500px at 18% 20%, rgba(125,211,252,.18), transparent 55%),
-        radial-gradient(900px 520px at 80% 22%, rgba(167,139,250,.18), transparent 55%),
-        radial-gradient(1200px 700px at 50% 120%, rgba(52,211,153,.10), transparent 60%),
-        linear-gradient(180deg, var(--bg0), var(--bg1));
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
 
-    /* floating bubbles like screenshot */
-    .bubbles{
-      position:fixed; inset:0; pointer-events:none; z-index:0; opacity:.75;
-      filter: blur(.2px);
-    }
-    .bubble{
-      position:absolute;
-      width:140px; height:140px; border-radius:999px;
-      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.7), rgba(255,255,255,.08) 45%, rgba(255,255,255,0) 70%),
-                  linear-gradient(135deg, rgba(125,211,252,.35), rgba(167,139,250,.30));
-      border: 1px solid rgba(255,255,255,.10);
-      box-shadow: 0 24px 80px rgba(0,0,0,.35);
-      opacity:.55;
-    }
-    .bubble.b1{ left:-30px; top:140px; width:170px; height:170px; }
-    .bubble.b2{ right:-55px; top:180px; width:210px; height:210px; opacity:.45; }
-    .bubble.b3{ right:80px; top:120px; width:52px; height:52px; opacity:.50; }
-    .bubble.b4{ right:56px; top:220px; width:36px; height:36px; opacity:.45; }
-    .bubble.b5{ left:120px; bottom:40px; width:60px; height:60px; opacity:.22; }
-
-    a{ color:inherit; text-decoration:none; }
-    .wrap{ max-width:1120px; margin:0 auto; padding:22px 16px 70px; position:relative; z-index:1; }
-
-    /* topbar */
-    .topbar{
-      position:sticky; top:0; z-index:20;
-      display:flex; align-items:center; justify-content:space-between;
-      gap:12px; padding:12px 16px;
-      background: linear-gradient(180deg, rgba(8,10,24,.92), rgba(8,10,24,.55));
-      border-bottom:1px solid rgba(255,255,255,.10);
-      backdrop-filter: blur(14px);
-    }
-    .brand{
-      display:flex; align-items:center; gap:12px; min-width:240px;
-    }
-    .logo{
-      width:42px; height:42px; border-radius:16px;
-      background:
-        radial-gradient(12px 12px at 30% 30%, rgba(255,255,255,.72), transparent 60%),
-        linear-gradient(135deg, rgba(125,211,252,.9), rgba(167,139,250,.9));
-      border:1px solid rgba(255,255,255,.12);
-      box-shadow: 0 18px 60px rgba(125,211,252,.15);
-    }
-    .brand h1{ margin:0; font-size:14px; letter-spacing:.9px; text-transform:uppercase; }
-    .brand p{ margin:2px 0 0; font-size:12px; color:var(--muted); }
-
-    .nav{
-      display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end;
-    }
-    .chip{
-      padding:10px 12px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.03);
-      color:var(--muted);
-      font-size:13px;
-      cursor:pointer;
-      user-select:none;
-      transition: transform .14s ease, border-color .14s ease, background .14s ease;
-      display:inline-flex; align-items:center; gap:8px;
-    }
-    .chip:hover{ transform: translateY(-1px); border-color: rgba(125,211,252,.42); background: rgba(125,211,252,.08); color:var(--text); }
-    .chip.active{ border-color: rgba(125,211,252,.58); background: rgba(125,211,252,.12); color:var(--text); }
-
-    /* header center title like screenshot */
-    .hero{
-      margin-top:18px;
-      border-radius: var(--r2);
-      border:1px solid rgba(255,255,255,.10);
-      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
-      box-shadow: var(--shadow);
-      overflow:hidden;
-    }
-    .heroTop{
-      padding:18px 18px 10px;
-      display:flex; align-items:flex-start; justify-content:space-between; gap:14px;
-    }
-    .titleBlock{ text-align:center; width:100%; }
-    .titleBlock .kicker{
-      font-family:var(--mono);
-      font-size:12px;
-      letter-spacing:1.3px;
-      text-transform:uppercase;
-      color:rgba(125,211,252,.92);
-      margin-bottom:6px;
-    }
-    .titleBlock h2{
-      margin:0;
-      font-size:22px;
-      letter-spacing:.2px;
-    }
-    .titleBlock p{
-      margin:8px auto 0;
-      max-width:85ch;
-      color:var(--muted);
-      font-size:13px;
-      line-height:1.6;
-    }
-
-    .heroBottom{
-      padding:0 18px 18px;
-      display:flex; align-items:center; justify-content:space-between;
-      gap:12px; flex-wrap:wrap;
-    }
-    .pill{
-      padding:10px 12px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.03);
-      color:var(--muted);
-      font-size:13px;
-      display:inline-flex; align-items:center; gap:8px;
-    }
-    .dot{ width:8px; height:8px; border-radius:50%; background: var(--brand); box-shadow: 0 0 0 4px rgba(125,211,252,.12); }
-    .dot.p{ background: var(--brand2); box-shadow: 0 0 0 4px rgba(167,139,250,.12); }
-    .dot.g{ background: var(--ok); box-shadow: 0 0 0 4px rgba(52,211,153,.12); }
-
-    .progressWrap{
-      display:flex; align-items:center; gap:10px; flex-wrap:wrap;
-    }
-    .progressBar{
-      width:220px; height:12px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.05);
-      overflow:hidden;
-    }
-    .progressBar > div{
-      height:100%;
-      width:0%;
-      background: linear-gradient(90deg, rgba(125,211,252,.95), rgba(167,139,250,.95));
-      border-radius:999px;
-      transition: width .25s ease;
-    }
-    .badge{
-      font-family:var(--mono);
-      font-size:12px;
-      padding:8px 10px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.03);
-      color:rgba(255,255,255,.90);
-      white-space:nowrap;
-    }
-
-    /* sections */
-    .content{ margin-top:16px; }
-    .panel{
-      border-radius: var(--r2);
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.03);
-      box-shadow: 0 10px 40px rgba(0,0,0,.25);
-      overflow:hidden;
-    }
-    .panelHead{
-      padding:16px 18px;
-      border-bottom:1px solid rgba(255,255,255,.10);
-      display:flex; align-items:flex-start; justify-content:space-between; gap:12px;
-      background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
-    }
-    .panelHead h3{ margin:0; font-size:16px; letter-spacing:.3px; }
-    .panelHead p{ margin:7px 0 0; color:var(--muted); font-size:13px; line-height:1.55; max-width:90ch; }
-    .panelBody{ padding:18px; }
-
-    /* ROADMAP timeline */
-    .roadmap{
-      position:relative;
-      margin-top:8px;
-      padding:22px 10px 6px;
-    }
-    .roadLine{
-      height:2px;
-      background: linear-gradient(90deg, rgba(125,211,252,.85), rgba(167,139,250,.65), rgba(52,211,153,.45));
-      border-radius:99px;
-      opacity:.9;
-      margin:22px 10px 28px;
-    }
-    .nodes{
-      display:grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap:12px;
-      position:relative;
-      margin-top:-64px;
-      padding:0 10px;
-    }
-    @media (max-width: 980px){
-      .nodes{ grid-template-columns: 1fr; margin-top:0; }
-      .roadLine{ display:none; }
-      .roadmap{ padding-top:8px; }
-    }
-
-    .node{
-      border-radius: var(--r);
-      border:1px solid rgba(255,255,255,.10);
-      background: radial-gradient(600px 220px at 30% 0%, rgba(125,211,252,.10), transparent 55%),
-                  radial-gradient(600px 220px at 75% 0%, rgba(167,139,250,.09), transparent 55%),
-                  rgba(255,255,255,.03);
-      padding:14px;
-      position:relative;
-      min-height: 170px;
-    }
-    .nodeTop{
-      display:flex; align-items:flex-start; justify-content:space-between; gap:10px;
-    }
-    .nodeDot{
-      width:14px; height:14px; border-radius:50%;
-      background: var(--brand);
-      border:1px solid rgba(255,255,255,.18);
-      box-shadow: 0 0 0 6px rgba(125,211,252,.10);
-      flex:0 0 auto;
-      margin-top:3px;
-    }
-    .nodeDot.p{ background: var(--brand2); box-shadow: 0 0 0 6px rgba(167,139,250,.10); }
-    .nodeDot.g{ background: var(--ok); box-shadow: 0 0 0 6px rgba(52,211,153,.10); }
-
-    .node h4{ margin:0; font-size:14px; letter-spacing:.2px; }
-    .node .date{
-      font-family:var(--mono);
-      font-size:12px;
-      color:rgba(255,255,255,.85);
-      opacity:.9;
-      border:1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.03);
-      padding:6px 8px;
-      border-radius:999px;
-      white-space:nowrap;
-    }
-    .node p{ margin:10px 0 0; color:var(--muted); font-size:13px; line-height:1.55; }
-
-    .bullets{ margin:10px 0 0; padding-left:18px; color:var(--muted); font-size:13px; line-height:1.55; }
-    .bullets li{ margin:6px 0; }
-
-    .nodeActions{
-      margin-top:12px;
-      display:flex; gap:10px; flex-wrap:wrap; align-items:center;
-    }
-
-    .btn{
-      padding:10px 12px;
-      border-radius: 14px;
-      border:1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.04);
-      color:var(--text);
-      cursor:pointer;
-      font-size:13px;
-      user-select:none;
-      transition: transform .14s ease, border-color .14s ease, background .14s ease;
-    }
-    .btn:hover{ transform: translateY(-1px); border-color: rgba(125,211,252,.45); background: rgba(125,211,252,.08); }
-    .btn.secondary:hover{ border-color: rgba(167,139,250,.45); background: rgba(167,139,250,.08); }
-    .btn.danger:hover{ border-color: rgba(251,113,133,.55); background: rgba(251,113,133,.10); }
-    .btn:active{ transform: translateY(0); }
-
-    .check{
-      display:inline-flex; align-items:center; gap:8px;
-      padding:8px 10px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.03);
-      color:var(--muted);
-      font-size:12px;
-      cursor:pointer;
-      user-select:none;
-      transition: .14s ease;
-    }
-    .check:hover{ border-color: rgba(52,211,153,.45); background: rgba(52,211,153,.08); color:var(--text); }
-    .check.done{
-      border-color: rgba(52,211,153,.55);
-      background: rgba(52,211,153,.12);
-      color:rgba(255,255,255,.92);
-    }
-    .check .tick{
-      width:18px; height:18px; border-radius:8px;
-      border:1px solid rgba(255,255,255,.18);
-      background: rgba(255,255,255,.03);
-      display:grid; place-items:center;
-    }
-    .check.done .tick{
-      border-color: rgba(52,211,153,.65);
-      background: rgba(52,211,153,.18);
-    }
-    .check svg{ width:13px; height:13px; opacity:0; transform: scale(.9); transition:.12s ease; }
-    .check.done svg{ opacity:1; transform: scale(1); }
-
-    /* NOTES modal */
-    .modalBackdrop{
-      position:fixed; inset:0; z-index:50;
-      background: rgba(0,0,0,.55);
-      backdrop-filter: blur(8px);
-      display:none;
-      align-items:center;
-      justify-content:center;
-      padding:18px;
-    }
-    .modalBackdrop.show{ display:flex; }
-    .modal{
-      width:min(980px, 100%);
-      border-radius: var(--r2);
-      border:1px solid rgba(255,255,255,.12);
-      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
-      box-shadow: var(--shadow);
-      overflow:hidden;
-    }
-    .modalHead{
-      padding:14px 16px;
-      border-bottom:1px solid rgba(255,255,255,.10);
-      display:flex; align-items:center; justify-content:space-between; gap:10px;
-      background: rgba(255,255,255,.03);
-    }
-    .modalHead h4{ margin:0; font-size:14px; letter-spacing:.3px; }
-    .modalBody{ padding:14px 16px 16px; }
-    .fields{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap:12px;
-    }
-    @media (max-width: 920px){
-      .fields{ grid-template-columns: 1fr; }
-    }
-    .field{
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.03);
-      border-radius: 16px;
-      padding:12px;
-    }
-    .field label{
-      display:flex; align-items:center; justify-content:space-between;
-      gap:10px;
-      font-size:12px;
-      color:rgba(255,255,255,.88);
-      letter-spacing:.4px;
-      text-transform:uppercase;
-      margin-bottom:10px;
-      font-family: var(--mono);
-    }
-    .field textarea{
-      width:100%;
-      min-height: 160px;
-      resize: vertical;
-      border-radius: 14px;
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(10,12,30,.55);
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--cream);
       color: var(--text);
-      padding:10px 10px;
-      font-size:13px;
-      line-height:1.55;
-      outline:none;
+      line-height: 1.6;
     }
-    .field textarea:focus{
-      border-color: rgba(125,211,252,.55);
-      box-shadow: 0 0 0 4px rgba(125,211,252,.10);
+
+    a {
+      text-decoration: none;
+      color: inherit;
     }
-    .small{
-      font-size:12px;
-      color:var(--muted);
-      line-height:1.55;
+
+    img {
+      max-width: 100%;
+      display: block;
+      border-radius: 18px;
     }
-    .footer{
-      margin-top:14px;
-      padding-top:14px;
-      border-top:1px solid rgba(255,255,255,.10);
-      display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap;
-      color:var(--muted);
-      font-size:12px;
+
+    .container {
+      width: min(1100px, 92%);
+      margin: auto;
     }
-    .kbd{
-      font-family:var(--mono);
-      font-size:12px;
-      padding:4px 6px;
-      border-radius:8px;
-      border:1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.03);
-      color: rgba(255,255,255,.85);
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--line);
     }
-    .hide{ display:none !important; }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 0;
+    }
+
+    .logo {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--green-dark);
+      letter-spacing: 0.5px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 24px;
+      color: var(--muted);
+      font-size: 0.96rem;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 12px 20px;
+      border-radius: 999px;
+      font-weight: 700;
+      transition: 0.2s ease;
+    }
+
+    .btn-primary {
+      background: var(--green);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: var(--green-dark);
+    }
+
+    .btn-outline {
+      border: 1px solid var(--green);
+      color: var(--green-dark);
+      background: white;
+    }
+
+    .btn-outline:hover {
+      background: var(--green-soft);
+    }
+
+    .hero {
+      padding: 80px 0 50px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 38px;
+      align-items: center;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      background: var(--green-soft);
+      color: var(--green-dark);
+      padding: 8px 14px;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      margin-bottom: 18px;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.4rem, 4vw, 4.6rem);
+      line-height: 1.05;
+      margin-bottom: 18px;
+      color: var(--green-dark);
+    }
+
+    .hero p {
+      font-size: 1.05rem;
+      color: var(--muted);
+      max-width: 560px;
+      margin-bottom: 26px;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .hero-card {
+      background: white;
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      padding: 18px;
+      box-shadow: 0 10px 35px rgba(47, 90, 58, 0.08);
+    }
+
+    .hero-visual {
+      display: grid;
+      gap: 16px;
+    }
+
+    .visual-main {
+      height: 360px;
+      border-radius: 28px;
+      background:
+        linear-gradient(rgba(79,125,90,0.08), rgba(79,125,90,0.08)),
+        url("https://images.unsplash.com/photo-1515823662972-da6a2e4d3002?auto=format&fit=crop&w=1200&q=80") center/cover no-repeat;
+      border: 1px solid var(--line);
+    }
+
+    .mini-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .mini-box {
+      background: white;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 18px;
+    }
+
+    .mini-box h4 {
+      color: var(--green-dark);
+      margin-bottom: 6px;
+    }
+
+    .mini-box p {
+      color: var(--muted);
+      font-size: 0.94rem;
+    }
+
+    section {
+      padding: 70px 0;
+    }
+
+    .section-head {
+      text-align: center;
+      margin-bottom: 36px;
+    }
+
+    .section-head span {
+      color: var(--green);
+      font-weight: 700;
+      font-size: 0.9rem;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    .section-head h2 {
+      font-size: clamp(2rem, 3vw, 3rem);
+      margin-top: 10px;
+      color: var(--green-dark);
+    }
+
+    .section-head p {
+      max-width: 650px;
+      margin: 12px auto 0;
+      color: var(--muted);
+    }
+
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 22px;
+    }
+
+    .card {
+      background: white;
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 8px 24px rgba(47, 90, 58, 0.05);
+    }
+
+    .card-image {
+      height: 220px;
+      background-size: cover;
+      background-position: center;
+    }
+
+    .card-content {
+      padding: 18px;
+    }
+
+    .card-content h3 {
+      margin-bottom: 8px;
+      color: var(--green-dark);
+      font-size: 1.12rem;
+    }
+
+    .card-content p {
+      color: var(--muted);
+      font-size: 0.95rem;
+      margin-bottom: 12px;
+    }
+
+    .price {
+      font-weight: 700;
+      color: var(--green);
+    }
+
+    .story {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 34px;
+      align-items: center;
+    }
+
+    .story-image {
+      height: 420px;
+      border-radius: 28px;
+      background:
+        linear-gradient(rgba(47,90,58,0.1), rgba(47,90,58,0.1)),
+        url("https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=1200&q=80") center/cover no-repeat;
+      border: 1px solid var(--line);
+    }
+
+    .story-box {
+      background: white;
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      padding: 30px;
+    }
+
+    .story-box h2 {
+      font-size: clamp(2rem, 3vw, 3rem);
+      color: var(--green-dark);
+      margin-bottom: 14px;
+    }
+
+    .story-box p {
+      color: var(--muted);
+      margin-bottom: 16px;
+    }
+
+    .story-points {
+      display: grid;
+      gap: 14px;
+      margin-top: 18px;
+    }
+
+    .story-points div {
+      padding: 14px 16px;
+      background: var(--green-soft);
+      border-radius: 16px;
+      color: var(--green-dark);
+      font-weight: 600;
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr 0.8fr;
+      gap: 18px;
+    }
+
+    .gallery-item {
+      min-height: 260px;
+      border-radius: 24px;
+      border: 1px solid var(--line);
+      background-size: cover;
+      background-position: center;
+    }
+
+    .gallery-1 {
+      background-image: url("https://images.unsplash.com/photo-1521017432531-fbd92d768814?auto=format&fit=crop&w=1200&q=80");
+    }
+
+    .gallery-2 {
+      background-image: url("https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=1200&q=80");
+    }
+
+    .gallery-3 {
+      background-image: url("https://images.unsplash.com/photo-1517705008128-361805f42e86?auto=format&fit=crop&w=1200&q=80");
+    }
+
+    .cta {
+      text-align: center;
+      background: white;
+      border: 1px solid var(--line);
+      border-radius: 30px;
+      padding: 46px 24px;
+      box-shadow: 0 10px 30px rgba(47, 90, 58, 0.05);
+    }
+
+    .cta h2 {
+      font-size: clamp(2rem, 3vw, 3rem);
+      color: var(--green-dark);
+      margin-bottom: 14px;
+    }
+
+    .cta p {
+      color: var(--muted);
+      max-width: 650px;
+      margin: 0 auto 22px;
+    }
+
+    footer {
+      padding: 34px 0 46px;
+      color: var(--muted);
+      font-size: 0.94rem;
+    }
+
+    .footer-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      border-top: 1px solid var(--line);
+      padding-top: 20px;
+      flex-wrap: wrap;
+    }
+
+    @media (max-width: 980px) {
+      .hero-grid,
+      .story {
+        grid-template-columns: 1fr;
+      }
+
+      .menu-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .gallery-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .nav {
+        flex-direction: column;
+        gap: 14px;
+      }
+
+      .nav-links {
+        gap: 14px;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .menu-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero {
+        padding-top: 50px;
+      }
+
+      .visual-main,
+      .story-image {
+        height: 280px;
+      }
+
+      .hero-actions {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .btn {
+        text-align: center;
+      }
+    }
   </style>
 </head>
-
 <body>
-  <div class="bubbles" aria-hidden="true">
-    <div class="bubble b1"></div>
-    <div class="bubble b2"></div>
-    <div class="bubble b3"></div>
-    <div class="bubble b4"></div>
-    <div class="bubble b5"></div>
-  </div>
-
-  <div class="topbar">
-    <div class="brand">
-      <div class="logo"></div>
-      <div>
-        <h1>ADLEQP Roadmap</h1>
-        <p>#tcosampaimampos • PLAN & PRACTICE</p>
-      </div>
+  <header>
+    <div class="container nav">
+      <a href="#" class="logo">Matcha & Coffee</a>
+      <nav class="nav-links">
+        <a href="#menu">Menu</a>
+        <a href="#story">Story</a>
+        <a href="#gallery">Gallery</a>
+        <a href="#visit">Visit</a>
+      </nav>
     </div>
+  </header>
 
-    <div class="nav" role="navigation" aria-label="Primary">
-      <div class="chip active" data-tab="plan">📌 PLAN</div>
-      <div class="chip" data-tab="practice">🧪 PRACTICE</div>
-      <div class="chip" id="notesBtn">📝 Notes</div>
-      <div class="chip" id="exportBtn">⬇ Export</div>
-      <div class="chip" id="resetBtn">🧼 Reset</div>
-    </div>
-  </div>
-
-  <div class="wrap">
+  <main>
     <section class="hero">
-      <div class="heroTop">
-        <div class="titleBlock">
-          <div class="kicker">Malaysia • Form 5 → OSCP • Professional Roadmap</div>
-          <h2>Company Roadmap (Your Cybersecurity Journey)</h2>
+      <div class="container hero-grid">
+        <div>
+          <span class="eyebrow">Fresh matcha. Smooth coffee.</span>
+          <h1>A calm café space for your daily green fix.</h1>
           <p>
-            Simple view: <span style="font-family:var(--mono)">PLAN</span> is the timeline of your future.
-            <span style="font-family:var(--mono)">PRACTICE</span> is the weekly training system that transforms you from “skid” to OSCP-ready.
+            Inspired by modern minimalist matcha cafés, this concept blends
+            premium ceremonial matcha, soft coffee tones, and a clean white-and-green
+            atmosphere for a fresh everyday experience.
+          </p>
+          <div class="hero-actions">
+            <a href="#menu" class="btn btn-primary">Explore Menu</a>
+            <a href="#visit" class="btn btn-outline">Visit Us</a>
+          </div>
+        </div>
+
+        <div class="hero-visual">
+          <div class="visual-main hero-card"></div>
+          <div class="mini-grid">
+            <div class="mini-box">
+              <h4>Signature Matcha</h4>
+              <p>Silky, earthy, bright, and made for everyday sipping.</p>
+            </div>
+            <div class="mini-box">
+              <h4>Specialty Coffee</h4>
+              <p>Balanced espresso drinks with a soft, clean finish.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="menu">
+      <div class="container">
+        <div class="section-head">
+          <span>Menu</span>
+          <h2>Simple drinks, made beautifully</h2>
+          <p>
+            A minimal menu focused on quality ingredients, clean taste, and a soft café mood.
           </p>
         </div>
-      </div>
-      <div class="heroBottom">
-        <div style="display:flex; gap:10px; flex-wrap:wrap;">
-          <div class="pill"><span class="dot"></span> Dream Role: Penetration Tester</div>
-          <div class="pill"><span class="dot p"></span> Backup: Threat Hunter / Sec Engineer</div>
-          <div class="pill"><span class="dot g"></span> Side: Bug Bounty (freelance)</div>
-        </div>
-        <div class="progressWrap" aria-label="Progress">
-          <div class="badge" id="progressLabel">0% complete</div>
-          <div class="progressBar"><div id="progressBarFill"></div></div>
+
+        <div class="menu-grid">
+          <article class="card">
+            <div class="card-image" style="background-image:url('https://images.unsplash.com/photo-1515823662972-da6a2e4d3002?auto=format&fit=crop&w=1200&q=80');"></div>
+            <div class="card-content">
+              <h3>Iced Matcha Latte</h3>
+              <p>Premium matcha whisked smooth with fresh milk over ice.</p>
+              <div class="price">$6.50</div>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-image" style="background-image:url('https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=1200&q=80');"></div>
+            <div class="card-content">
+              <h3>Hot Matcha Cloud</h3>
+              <p>Warm, creamy, and softly sweet with a delicate green finish.</p>
+              <div class="price">$6.00</div>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-image" style="background-image:url('https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=1200&q=80');"></div>
+            <div class="card-content">
+              <h3>House Latte</h3>
+              <p>Classic espresso and milk with a smooth, balanced profile.</p>
+              <div class="price">$5.50</div>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-image" style="background-image:url('https://images.unsplash.com/photo-1517705008128-361805f42e86?auto=format&fit=crop&w=1200&q=80');"></div>
+            <div class="card-content">
+              <h3>Dirty Matcha</h3>
+              <p>A layered matcha and espresso drink for green tea lovers who want depth.</p>
+              <div class="price">$7.00</div>
+            </div>
+          </article>
         </div>
       </div>
     </section>
 
-    <!-- PLAN -->
-    <section class="content" id="plan">
-      <div class="panel">
-        <div class="panelHead">
-          <div>
-            <h3>PLAN — Your Future Timeline</h3>
-            <p>
-              Read this like a road trip. Each box is a phase. You only need to focus on the
-              <b>current box</b>, not everything at once.
-            </p>
-          </div>
-          <div class="badge">APU • UTM • UiTM</div>
-        </div>
+    <section id="story">
+      <div class="container story">
+        <div class="story-image"></div>
 
-        <div class="panelBody">
-          <div class="roadmap">
-            <div class="roadLine"></div>
-            <div class="nodes" id="planNodes"></div>
-          </div>
+        <div class="story-box">
+          <h2>Minimal, fresh, and made for slow moments</h2>
+          <p>
+            This brand concept is built around a quiet café mood: soft natural light,
+            white surfaces, leafy green tones, and drinks that look as calm as they taste.
+          </p>
+          <p>
+            The visual direction takes inspiration from modern matcha cafés on Instagram,
+            but keeps the website original, clean, and easy to expand into a real brand later.
+          </p>
 
-          <div class="footer">
-            <div>Contact: <span style="font-family:var(--mono)">telegram @adleqp</span></div>
-            <div>Donation: <span style="font-family:var(--mono)">hao.paypal.ig@gmail.com</span></div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- PRACTICE -->
-    <section class="content hide" id="practice">
-      <div class="panel">
-        <div class="panelHead">
-          <div>
-            <h3>PRACTICE — Skid → OSCP (Training Roadmap)</h3>
-            <p>
-              This is the simple “skill ladder”. You climb it step-by-step.
-              Each step has a weekly activity you repeat until it becomes easy.
-            </p>
-          </div>
-          <div class="badge">TryHackMe • PortSwigger • Lab</div>
-        </div>
-
-        <div class="panelBody">
-          <div class="roadmap">
-            <div class="roadLine"></div>
-            <div class="nodes" id="practiceNodes"></div>
-          </div>
-
-          <div class="footer">
-            <div>Shortcut: Press <span class="kbd">P</span> to switch PLAN/PRACTICE</div>
-            <div>Notes & progress saved in your browser</div>
+          <div class="story-points">
+            <div>White + green palette for a clean premium look</div>
+            <div>Matcha-forward identity with coffee support</div>
+            <div>Simple aesthetic that works for café, kiosk, or online orders</div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- download anchor -->
-    <a id="dl" class="hide"></a>
-  </div>
+    <section id="gallery">
+      <div class="container">
+        <div class="section-head">
+          <span>Gallery</span>
+          <h2>Soft green café mood</h2>
+          <p>
+            A visual direction focused on freshness, calm energy, and elegant everyday drinks.
+          </p>
+        </div>
 
-  <!-- NOTES MODAL -->
-  <div class="modalBackdrop" id="modalBackdrop" role="dialog" aria-modal="true" aria-label="Notes">
-    <div class="modal">
-      <div class="modalHead">
-        <h4 id="modalTitle">Notes</h4>
-        <div style="display:flex; gap:10px; flex-wrap:wrap;">
-          <button class="btn secondary" id="modalSaveBtn">Save</button>
-          <button class="btn danger" id="modalCloseBtn">Close</button>
+        <div class="gallery-grid">
+          <div class="gallery-item gallery-1"></div>
+          <div class="gallery-item gallery-2"></div>
+          <div class="gallery-item gallery-3"></div>
         </div>
       </div>
-      <div class="modalBody">
-        <div class="fields">
-          <div class="field">
-            <label>Global Notes <span class="small" id="globalSaved"></span></label>
-            <textarea id="notesGlobal" placeholder="Write anything: goals, reminders, resources, what you learned..."></textarea>
-          </div>
-          <div class="field">
-            <label>Section Notes (PLAN / PRACTICE) <span class="small" id="sectionSaved"></span></label>
-            <textarea id="notesSection" placeholder="Notes for the current section you’re on (PLAN or PRACTICE)."></textarea>
-          </div>
-        </div>
+    </section>
 
-        <div style="height:12px"></div>
-
-        <div class="field">
-          <label id="stepLabel">Step Notes <span class="small" id="stepSaved"></span></label>
-          <textarea id="notesStep" placeholder="This is for a specific roadmap step (when you click 'Step Note' on a box)."></textarea>
-          <div class="small" style="margin-top:10px;">
-            Tip: Click <b>Step Note</b> inside any roadmap box to write notes specifically for that step.
-          </div>
-        </div>
-
-        <div class="small" style="margin-top:12px;">
-          Everything saves to <span style="font-family:var(--mono)">localStorage</span>. If you clear browser data, notes will reset.
-          Use <b>Export</b> to back up your progress.
+    <section id="visit">
+      <div class="container">
+        <div class="cta">
+          <h2>Your daily matcha & coffee stop</h2>
+          <p>
+            Open daily for handcrafted matcha, smooth espresso, and a clean modern café atmosphere.
+            Perfect for studying, catching up, or taking a quiet break.
+          </p>
+          <a href="#" class="btn btn-primary">Order Now</a>
         </div>
       </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-row">
+      <div>© 2026 Matcha & Coffee</div>
+      <div>Fresh drinks • White & green aesthetic • Minimal café concept</div>
     </div>
-  </div>
-
-  <script>
-    // ----------------------------
-    // STORAGE
-    // ----------------------------
-    const STORAGE_KEY = "adleqp_roadmap_v2";
-
-    const state = loadState();
-    function loadState(){
-      try{
-        const raw = localStorage.getItem(STORAGE_KEY);
-        if(!raw) return { done:{}, notes:{ global:"", plan:"", practice:"", step:{} }, lastStep:null };
-        const parsed = JSON.parse(raw);
-        parsed.done ||= {};
-        parsed.notes ||= { global:"", plan:"", practice:"", step:{} };
-        parsed.notes.step ||= {};
-        return parsed;
-      }catch{
-        return { done:{}, notes:{ global:"", plan:"", practice:"", step:{} }, lastStep:null };
-      }
-    }
-    function saveState(){
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-      updateProgress();
-    }
-
-    // ----------------------------
-    // DATA (simple, clearer)
-    // ----------------------------
-    // PLAN: future timeline boxes
-    const planSteps = [
-      {
-        id:"plan_spm",
-        dot:"brand",
-        date:"NOW → SPM",
-        title:"Form 5: Foundations + SPM",
-        desc:"Focus on SPM + fundamentals only. Don’t chase random tools.",
-        bullets:[
-          "SPM: Math/AddMath/English/Science",
-          "Networking: OSI, TCP/IP, DNS, HTTP",
-          "Linux: permissions, users, SSH",
-          "Python: basics + small automation",
-        ],
-      },
-      {
-        id:"plan_diploma",
-        dot:"p",
-        date:"18–20",
-        title:"Diploma: Build real skill",
-        desc:"You become strong by building a lab, writing notes, and being consistent.",
-        bullets:[
-          "Year 1: Network+ (optional), lab setup",
-          "Year 2: Security+ target, web basics",
-          "Year 3: internship + reporting habit",
-          "Start bug bounty slowly (learning, not money)"
-        ],
-      },
-      {
-        id:"plan_degree",
-        dot:"g",
-        date:"21–23",
-        title:"Degree: OSCP track",
-        desc:"Turn skill into proof: AD + privesc + clean reports.",
-        bullets:[
-          "OSCP focus: AD, privesc, pivoting",
-          "CEH optional (HR-friendly locally)",
-          "Portfolio: writeups + scripts",
-          "Communication + report writing"
-        ],
-      },
-      {
-        id:"plan_job",
-        dot:"brand",
-        date:"23–25",
-        title:"Industry: Get hired → LGMS-ready",
-        desc:"Start job, then move into Pentest/Threat hunting role.",
-        bullets:[
-          "First job: SOC / Junior Security / Junior Pentester",
-          "Targets: LGMS, CyberSecurity MY, Securemetric",
-          "Keep improving: reports + labs + certs",
-          "Bug bounty: side skill + learning"
-        ],
-      },
-    ];
-
-    // PRACTICE: skill ladder boxes (skid → OSCP)
-    const practiceSteps = [
-      {
-        id:"prac_fundamentals",
-        dot:"brand",
-        date:"Step 1",
-        title:"Fundamentals (stop being a skid)",
-        desc:"You can explain what you do. No blind copy-paste.",
-        bullets:[
-          "Learn networking basics + write notes",
-          "Linux daily drills (permissions, users, SSH)",
-          "Python basics (loops, functions, files)",
-          "2 TryHackMe beginner rooms/week + summary"
-        ],
-      },
-      {
-        id:"prac_web",
-        dot:"p",
-        date:"Step 2",
-        title:"Web Security (legal training)",
-        desc:"Web is the best starting point for bug bounty + pentesting.",
-        bullets:[
-          "PortSwigger Academy weekly modules",
-          "Understand OWASP (XSS, SQLi, IDOR, auth logic)",
-          "Practice in labs only",
-          "Write 1-page mini report each week"
-        ],
-      },
-      {
-        id:"prac_ad",
-        dot:"g",
-        date:"Step 3",
-        title:"Active Directory (enterprise skill)",
-        desc:"This is where pentesters become valuable.",
-        bullets:[
-          "Build / use an AD lab (legal)",
-          "Learn users/groups/Kerberos concept",
-          "Enumeration mindset (what to look for)",
-          "Document every attempt: what worked, what didn’t"
-        ],
-      },
-      {
-        id:"prac_oscp",
-        dot:"brand",
-        date:"Step 4",
-        title:"OSCP Method (practice like exam)",
-        desc:"You train like OSCP: method + time management + report.",
-        bullets:[
-          "Practice privesc (Windows + Linux) in labs",
-          "Write OSCP-style reports",
-          "Do mock sessions (2–4h focused)",
-          "Be able to explain every step clearly"
-        ],
-      },
-    ];
-
-    // ----------------------------
-    // RENDER
-    // ----------------------------
-    function renderNodes(containerId, steps){
-      const el = document.getElementById(containerId);
-      el.innerHTML = "";
-      for(const s of steps){
-        const node = document.createElement("div");
-        node.className = "node";
-
-        const dotClass = s.dot === "p" ? "nodeDot p" : (s.dot === "g" ? "nodeDot g" : "nodeDot");
-        const done = !!state.done[s.id];
-
-        node.innerHTML = `
-          <div class="nodeTop">
-            <div style="display:flex; align-items:flex-start; gap:10px;">
-              <div class="${dotClass}" aria-hidden="true"></div>
-              <div>
-                <h4>${escapeHtml(s.title)}</h4>
-                <div style="margin-top:6px; color: var(--muted); font-size:12px;">
-                  ${escapeHtml(s.desc)}
-                </div>
-              </div>
-            </div>
-            <div class="date">${escapeHtml(s.date)}</div>
-          </div>
-
-          <ul class="bullets">
-            ${s.bullets.map(b => `<li>${escapeHtml(b)}</li>`).join("")}
-          </ul>
-
-          <div class="nodeActions">
-            <div class="check ${done ? "done":""}" data-id="${escapeHtml(s.id)}">
-              <div class="tick">
-                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                  <path d="M20 6L9 17l-5-5" stroke="white" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </div>
-              Mark complete
-            </div>
-            <button class="btn secondary" data-note="${escapeHtml(s.id)}">Step Note</button>
-          </div>
-        `;
-
-        // toggle complete
-        node.querySelector(".check").addEventListener("click", (e) => {
-          const id = e.currentTarget.getAttribute("data-id");
-          state.done[id] = !state.done[id];
-          e.currentTarget.classList.toggle("done", !!state.done[id]);
-          saveState();
-        });
-
-        // open step note
-        node.querySelector("[data-note]").addEventListener("click", (e) => {
-          const id = e.currentTarget.getAttribute("data-note");
-          openNotesModal(id);
-        });
-
-        el.appendChild(node);
-      }
-    }
-
-    function escapeHtml(s){
-      return String(s)
-        .replaceAll("&","&amp;")
-        .replaceAll("<","&lt;")
-        .replaceAll(">","&gt;")
-        .replaceAll('"',"&quot;")
-        .replaceAll("'","&#039;");
-    }
-
-    // ----------------------------
-    // TABS
-    // ----------------------------
-    const chips = document.querySelectorAll(".chip[data-tab]");
-    function setTab(name){
-      document.getElementById("plan").classList.toggle("hide", name !== "plan");
-      document.getElementById("practice").classList.toggle("hide", name !== "practice");
-      chips.forEach(c => c.classList.toggle("active", c.dataset.tab === name));
-      // load section notes into modal (if open)
-      saveState();
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
-    chips.forEach(c => c.addEventListener("click", () => setTab(c.dataset.tab)));
-
-    window.addEventListener("keydown", (e) => {
-      if(e.key.toLowerCase() === "p"){
-        const planVisible = !document.getElementById("plan").classList.contains("hide");
-        setTab(planVisible ? "practice" : "plan");
-      }
-      if(e.key.toLowerCase() === "n"){
-        openNotesModal(state.lastStep || null);
-      }
-      if(e.key === "Escape"){
-        closeModal();
-      }
-    });
-
-    // ----------------------------
-    // PROGRESS
-    // ----------------------------
-    function updateProgress(){
-      const all = [...planSteps, ...practiceSteps];
-      const total = all.length;
-      const done = all.filter(x => state.done[x.id]).length;
-      const pct = total ? Math.round((done/total)*100) : 0;
-
-      document.getElementById("progressBarFill").style.width = pct + "%";
-      document.getElementById("progressLabel").textContent = `${pct}% complete • ${done}/${total}`;
-    }
-
-    // ----------------------------
-    // NOTES MODAL
-    // ----------------------------
-    const modalBackdrop = document.getElementById("modalBackdrop");
-    const notesGlobal = document.getElementById("notesGlobal");
-    const notesSection = document.getElementById("notesSection");
-    const notesStep = document.getElementById("notesStep");
-    const stepLabel = document.getElementById("stepLabel");
-    const modalTitle = document.getElementById("modalTitle");
-
-    const globalSaved = document.getElementById("globalSaved");
-    const sectionSaved = document.getElementById("sectionSaved");
-    const stepSaved = document.getElementById("stepSaved");
-
-    let currentStepId = null;
-    let saveTimer = null;
-
-    function currentTabName(){
-      return document.getElementById("plan").classList.contains("hide") ? "practice" : "plan";
-    }
-
-    function openNotesModal(stepId){
-      currentStepId = stepId || null;
-      state.lastStep = currentStepId || state.lastStep;
-
-      modalTitle.textContent = "Notes";
-      notesGlobal.value = state.notes.global || "";
-
-      const tab = currentTabName();
-      notesSection.value = state.notes[tab] || "";
-
-      if(currentStepId){
-        stepLabel.textContent = `Step Notes — ${currentStepId}`;
-        notesStep.value = state.notes.step[currentStepId] || "";
-      } else {
-        stepLabel.textContent = `Step Notes — (select a step)`;
-        notesStep.value = "";
-      }
-
-      globalSaved.textContent = "";
-      sectionSaved.textContent = "";
-      stepSaved.textContent = "";
-
-      modalBackdrop.classList.add("show");
-      // focus first field
-      notesSection.focus();
-    }
-
-    function closeModal(){
-      modalBackdrop.classList.remove("show");
-    }
-
-    function stampSaved(el){
-      const t = new Date();
-      const hh = String(t.getHours()).padStart(2,"0");
-      const mm = String(t.getMinutes()).padStart(2,"0");
-      el.textContent = `Saved ${hh}:${mm}`;
-    }
-
-    function persistNotes(){
-      state.notes.global = notesGlobal.value;
-
-      const tab = currentTabName();
-      state.notes[tab] = notesSection.value;
-
-      if(currentStepId){
-        state.notes.step[currentStepId] = notesStep.value;
-      }
-
-      saveState();
-      stampSaved(globalSaved);
-      stampSaved(sectionSaved);
-      stampSaved(stepSaved);
-    }
-
-    function scheduleAutosave(){
-      clearTimeout(saveTimer);
-      saveTimer = setTimeout(persistNotes, 450);
-    }
-
-    notesGlobal.addEventListener("input", scheduleAutosave);
-    notesSection.addEventListener("input", scheduleAutosave);
-    notesStep.addEventListener("input", scheduleAutosave);
-
-    document.getElementById("notesBtn").addEventListener("click", () => openNotesModal(state.lastStep || null));
-    document.getElementById("modalCloseBtn").addEventListener("click", closeModal);
-    modalBackdrop.addEventListener("click", (e) => {
-      if(e.target === modalBackdrop) closeModal();
-    });
-    document.getElementById("modalSaveBtn").addEventListener("click", persistNotes);
-
-    // ----------------------------
-    // EXPORT / RESET
-    // ----------------------------
-    document.getElementById("exportBtn").addEventListener("click", () => {
-      const payload = {
-        exportedAt: new Date().toISOString(),
-        done: state.done,
-        notes: state.notes
-      };
-      const blob = new Blob([JSON.stringify(payload, null, 2)], { type:"application/json" });
-      const url = URL.createObjectURL(blob);
-      const a = document.getElementById("dl");
-      a.href = url;
-      a.download = "adleqp_roadmap_backup.json";
-      a.click();
-      URL.revokeObjectURL(url);
-    });
-
-    document.getElementById("resetBtn").addEventListener("click", () => {
-      const ok = confirm("Reset progress + notes? (Only affects this browser)");
-      if(!ok) return;
-      state.done = {};
-      state.notes = { global:"", plan:"", practice:"", step:{} };
-      state.lastStep = null;
-      saveState();
-      renderNodes("planNodes", planSteps);
-      renderNodes("practiceNodes", practiceSteps);
-      closeModal();
-    });
-
-    // ----------------------------
-    // INIT
-    // ----------------------------
-    renderNodes("planNodes", planSteps);
-    renderNodes("practiceNodes", practiceSteps);
-    updateProgress();
-  </script>
+  </footer>
 </body>
 </html>
