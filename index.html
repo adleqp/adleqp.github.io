@@ -3,17 +3,17 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Matcha & Coffee</title>
+  <title>DHIA Matcha</title>
   <style>
     :root {
-      --green: #4f7d5a;
-      --green-dark: #2f5a3a;
-      --green-soft: #dfeee3;
-      --cream: #f8fbf7;
+      --green: #5aa78d;
+      --green-dark: #2d6f5a;
+      --green-soft: #e7f6ef;
       --white: #ffffff;
-      --text: #1f2a22;
-      --muted: #647067;
-      --line: #d7e4d8;
+      --bg: #f9fffb;
+      --text: #17352c;
+      --muted: #5f746c;
+      --line: #d7ebe2;
     }
 
     * {
@@ -22,9 +22,13 @@
       padding: 0;
     }
 
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
       font-family: Arial, Helvetica, sans-serif;
-      background: var(--cream);
+      background: var(--bg);
       color: var(--text);
       line-height: 1.6;
     }
@@ -34,21 +38,21 @@
       color: inherit;
     }
 
-    img {
+    img,
+    video {
       max-width: 100%;
       display: block;
-      border-radius: 18px;
     }
 
     .container {
-      width: min(1100px, 92%);
+      width: min(1120px, 92%);
       margin: auto;
     }
 
     header {
       position: sticky;
       top: 0;
-      z-index: 100;
+      z-index: 1000;
       background: rgba(255, 255, 255, 0.92);
       backdrop-filter: blur(10px);
       border-bottom: 1px solid var(--line);
@@ -56,31 +60,54 @@
 
     .nav {
       display: flex;
-      align-items: center;
       justify-content: space-between;
-      padding: 16px 0;
+      align-items: center;
+      gap: 20px;
+      padding: 14px 0;
     }
 
-    .logo {
-      font-size: 1.3rem;
-      font-weight: 700;
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand img {
+      width: 54px;
+      height: 54px;
+      object-fit: contain;
+      border-radius: 14px;
+      background: white;
+      padding: 6px;
+      border: 1px solid var(--line);
+    }
+
+    .brand-text h1 {
+      font-size: 1.15rem;
       color: var(--green-dark);
-      letter-spacing: 0.5px;
+      line-height: 1.1;
+    }
+
+    .brand-text p {
+      font-size: 0.82rem;
+      color: var(--muted);
     }
 
     .nav-links {
       display: flex;
       gap: 24px;
       color: var(--muted);
-      font-size: 0.96rem;
+      font-size: 0.95rem;
+      flex-wrap: wrap;
     }
 
     .btn {
       display: inline-block;
-      padding: 12px 20px;
+      padding: 13px 22px;
       border-radius: 999px;
       font-weight: 700;
       transition: 0.2s ease;
+      border: 1px solid transparent;
     }
 
     .btn-primary {
@@ -93,80 +120,96 @@
     }
 
     .btn-outline {
-      border: 1px solid var(--green);
-      color: var(--green-dark);
       background: white;
+      color: var(--green-dark);
+      border-color: var(--green);
     }
 
     .btn-outline:hover {
       background: var(--green-soft);
     }
 
+    .btn-whatsapp {
+      background: #25d366;
+      color: white;
+    }
+
+    .btn-whatsapp:hover {
+      filter: brightness(0.95);
+    }
+
     .hero {
-      padding: 80px 0 50px;
+      padding: 80px 0 56px;
     }
 
     .hero-grid {
       display: grid;
-      grid-template-columns: 1.1fr 0.9fr;
-      gap: 38px;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 34px;
       align-items: center;
     }
 
-    .eyebrow {
+    .badge {
       display: inline-block;
       background: var(--green-soft);
       color: var(--green-dark);
       padding: 8px 14px;
       border-radius: 999px;
-      font-size: 0.85rem;
+      font-size: 0.86rem;
       font-weight: 700;
       margin-bottom: 18px;
     }
 
-    .hero h1 {
-      font-size: clamp(2.4rem, 4vw, 4.6rem);
+    .hero h2 {
+      font-size: clamp(2.3rem, 4vw, 4.5rem);
       line-height: 1.05;
-      margin-bottom: 18px;
       color: var(--green-dark);
+      margin-bottom: 14px;
+    }
+
+    .hero .tagline {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--green);
+      margin-bottom: 12px;
     }
 
     .hero p {
-      font-size: 1.05rem;
       color: var(--muted);
+      font-size: 1.02rem;
       max-width: 560px;
-      margin-bottom: 26px;
+      margin-bottom: 24px;
     }
 
     .hero-actions {
       display: flex;
-      gap: 14px;
       flex-wrap: wrap;
+      gap: 14px;
     }
 
     .hero-card {
       background: white;
       border: 1px solid var(--line);
-      border-radius: 28px;
+      border-radius: 30px;
       padding: 18px;
-      box-shadow: 0 10px 35px rgba(47, 90, 58, 0.08);
+      box-shadow: 0 12px 35px rgba(45, 111, 90, 0.08);
     }
 
-    .hero-visual {
-      display: grid;
-      gap: 16px;
-    }
-
-    .visual-main {
-      height: 360px;
-      border-radius: 28px;
-      background:
-        linear-gradient(rgba(79,125,90,0.08), rgba(79,125,90,0.08)),
-        url("https://images.unsplash.com/photo-1515823662972-da6a2e4d3002?auto=format&fit=crop&w=1200&q=80") center/cover no-repeat;
+    .hero-video {
+      border-radius: 24px;
+      overflow: hidden;
       border: 1px solid var(--line);
+      background: #000;
     }
 
-    .mini-grid {
+    .hero-video video {
+      width: 100%;
+      height: 420px;
+      object-fit: cover;
+    }
+
+    .mini-info {
+      margin-top: 16px;
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 16px;
@@ -176,21 +219,22 @@
       background: white;
       border: 1px solid var(--line);
       border-radius: 20px;
-      padding: 18px;
+      padding: 16px;
     }
 
     .mini-box h4 {
       color: var(--green-dark);
       margin-bottom: 6px;
+      font-size: 1rem;
     }
 
     .mini-box p {
       color: var(--muted);
-      font-size: 0.94rem;
+      font-size: 0.93rem;
     }
 
     section {
-      padding: 70px 0;
+      padding: 72px 0;
     }
 
     .section-head {
@@ -200,22 +244,22 @@
 
     .section-head span {
       color: var(--green);
-      font-weight: 700;
-      font-size: 0.9rem;
-      letter-spacing: 0.5px;
       text-transform: uppercase;
+      font-size: 0.88rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
     }
 
-    .section-head h2 {
-      font-size: clamp(2rem, 3vw, 3rem);
-      margin-top: 10px;
+    .section-head h3 {
+      font-size: clamp(1.9rem, 3vw, 3rem);
       color: var(--green-dark);
+      margin-top: 10px;
     }
 
     .section-head p {
-      max-width: 650px;
-      margin: 12px auto 0;
       color: var(--muted);
+      max-width: 700px;
+      margin: 12px auto 0;
     }
 
     .menu-grid {
@@ -229,189 +273,227 @@
       border: 1px solid var(--line);
       border-radius: 24px;
       overflow: hidden;
-      box-shadow: 0 8px 24px rgba(47, 90, 58, 0.05);
+      box-shadow: 0 8px 24px rgba(45, 111, 90, 0.05);
     }
 
-    .card-image {
+    .card-media {
       height: 220px;
-      background-size: cover;
-      background-position: center;
+      background: linear-gradient(rgba(90,167,141,0.10), rgba(90,167,141,0.10)),
+        url("599209870_18088751050962464_939712052411691412_n.jpg") center/contain no-repeat,
+        #f4fbf7;
+      border-bottom: 1px solid var(--line);
     }
 
     .card-content {
       padding: 18px;
     }
 
-    .card-content h3 {
-      margin-bottom: 8px;
+    .card-content h4 {
       color: var(--green-dark);
-      font-size: 1.12rem;
+      margin-bottom: 8px;
+      font-size: 1.1rem;
     }
 
     .card-content p {
       color: var(--muted);
       font-size: 0.95rem;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
     }
 
     .price {
-      font-weight: 700;
       color: var(--green);
+      font-weight: 700;
     }
 
-    .story {
+    .about-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 34px;
+      grid-template-columns: 0.9fr 1.1fr;
+      gap: 30px;
       align-items: center;
     }
 
-    .story-image {
-      height: 420px;
-      border-radius: 28px;
-      background:
-        linear-gradient(rgba(47,90,58,0.1), rgba(47,90,58,0.1)),
-        url("https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=1200&q=80") center/cover no-repeat;
-      border: 1px solid var(--line);
-    }
-
-    .story-box {
-      background: white;
-      border: 1px solid var(--line);
-      border-radius: 28px;
-      padding: 30px;
-    }
-
-    .story-box h2 {
-      font-size: clamp(2rem, 3vw, 3rem);
-      color: var(--green-dark);
-      margin-bottom: 14px;
-    }
-
-    .story-box p {
-      color: var(--muted);
-      margin-bottom: 16px;
-    }
-
-    .story-points {
-      display: grid;
-      gap: 14px;
-      margin-top: 18px;
-    }
-
-    .story-points div {
-      padding: 14px 16px;
-      background: var(--green-soft);
-      border-radius: 16px;
-      color: var(--green-dark);
-      font-weight: 600;
-    }
-
-    .gallery-grid {
-      display: grid;
-      grid-template-columns: 1.2fr 0.8fr 0.8fr;
-      gap: 18px;
-    }
-
-    .gallery-item {
-      min-height: 260px;
-      border-radius: 24px;
-      border: 1px solid var(--line);
-      background-size: cover;
-      background-position: center;
-    }
-
-    .gallery-1 {
-      background-image: url("https://images.unsplash.com/photo-1521017432531-fbd92d768814?auto=format&fit=crop&w=1200&q=80");
-    }
-
-    .gallery-2 {
-      background-image: url("https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=1200&q=80");
-    }
-
-    .gallery-3 {
-      background-image: url("https://images.unsplash.com/photo-1517705008128-361805f42e86?auto=format&fit=crop&w=1200&q=80");
-    }
-
-    .cta {
-      text-align: center;
+    .about-logo {
       background: white;
       border: 1px solid var(--line);
       border-radius: 30px;
-      padding: 46px 24px;
-      box-shadow: 0 10px 30px rgba(47, 90, 58, 0.05);
+      padding: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 360px;
+      box-shadow: 0 12px 35px rgba(45, 111, 90, 0.06);
     }
 
-    .cta h2 {
+    .about-logo img {
+      width: min(320px, 100%);
+      object-fit: contain;
+    }
+
+    .about-box {
+      background: white;
+      border: 1px solid var(--line);
+      border-radius: 30px;
+      padding: 32px;
+    }
+
+    .about-box h3 {
       font-size: clamp(2rem, 3vw, 3rem);
       color: var(--green-dark);
       margin-bottom: 14px;
     }
 
-    .cta p {
+    .about-box p {
       color: var(--muted);
-      max-width: 650px;
-      margin: 0 auto 22px;
+      margin-bottom: 15px;
     }
 
-    footer {
-      padding: 34px 0 46px;
+    .points {
+      display: grid;
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .points div {
+      background: var(--green-soft);
+      color: var(--green-dark);
+      padding: 14px 16px;
+      border-radius: 16px;
+      font-weight: 600;
+    }
+
+    .video-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .video-card {
+      background: white;
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 8px 24px rgba(45, 111, 90, 0.05);
+    }
+
+    .video-card video {
+      width: 100%;
+      height: 430px;
+      object-fit: cover;
+      background: #000;
+    }
+
+    .video-caption {
+      padding: 16px;
+    }
+
+    .video-caption h4 {
+      color: var(--green-dark);
+      margin-bottom: 6px;
+    }
+
+    .video-caption p {
       color: var(--muted);
       font-size: 0.94rem;
     }
 
+    .socials {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-top: 22px;
+    }
+
+    .social-chip {
+      background: white;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 12px 18px;
+      color: var(--green-dark);
+      font-weight: 700;
+    }
+
+    .cta {
+      background: white;
+      border: 1px solid var(--line);
+      border-radius: 30px;
+      padding: 48px 26px;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(45, 111, 90, 0.05);
+    }
+
+    .cta h3 {
+      font-size: clamp(2rem, 3vw, 3rem);
+      color: var(--green-dark);
+      margin-bottom: 10px;
+    }
+
+    .cta p {
+      color: var(--muted);
+      max-width: 680px;
+      margin: 0 auto 22px;
+    }
+
+    .cta-actions {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+
+    footer {
+      padding: 34px 0 46px;
+    }
+
     .footer-row {
+      border-top: 1px solid var(--line);
+      padding-top: 20px;
       display: flex;
       justify-content: space-between;
       gap: 16px;
-      border-top: 1px solid var(--line);
-      padding-top: 20px;
       flex-wrap: wrap;
+      color: var(--muted);
+      font-size: 0.94rem;
     }
 
-    @media (max-width: 980px) {
+    @media (max-width: 1000px) {
       .hero-grid,
-      .story {
-        grid-template-columns: 1fr;
+      .about-grid,
+      .menu-grid,
+      .video-grid {
+        grid-template-columns: 1fr 1fr;
       }
 
-      .menu-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-
-      .gallery-grid {
+      .hero-grid,
+      .about-grid {
         grid-template-columns: 1fr;
       }
     }
 
-    @media (max-width: 640px) {
+    @media (max-width: 700px) {
       .nav {
         flex-direction: column;
-        gap: 14px;
+        align-items: flex-start;
       }
 
       .nav-links {
         gap: 14px;
-        flex-wrap: wrap;
-        justify-content: center;
       }
 
-      .menu-grid {
+      .menu-grid,
+      .video-grid,
+      .mini-info {
         grid-template-columns: 1fr;
       }
 
-      .hero {
-        padding-top: 50px;
+      .hero-video video,
+      .video-card video {
+        height: 320px;
       }
 
-      .visual-main,
-      .story-image {
-        height: 280px;
-      }
-
-      .hero-actions {
+      .hero-actions,
+      .cta-actions {
         flex-direction: column;
-        align-items: stretch;
       }
 
       .btn {
@@ -423,12 +505,19 @@
 <body>
   <header>
     <div class="container nav">
-      <a href="#" class="logo">Matcha & Coffee</a>
+      <div class="brand">
+        <img src="599209870_18088751050962464_939712052411691412_n.jpg" alt="DHIA Matcha Logo">
+        <div class="brand-text">
+          <h1>DHIA Matcha</h1>
+          <p>Sweet Sips, Chill Vibes.</p>
+        </div>
+      </div>
+
       <nav class="nav-links">
         <a href="#menu">Menu</a>
-        <a href="#story">Story</a>
-        <a href="#gallery">Gallery</a>
-        <a href="#visit">Visit</a>
+        <a href="#about">About</a>
+        <a href="#moments">Moments</a>
+        <a href="#contact">Contact</a>
       </nav>
     </div>
   </header>
@@ -437,29 +526,44 @@
     <section class="hero">
       <div class="container hero-grid">
         <div>
-          <span class="eyebrow">Fresh matcha. Smooth coffee.</span>
-          <h1>A calm café space for your daily green fix.</h1>
+          <span class="badge">Fresh matcha • Coffee art • Chill vibes</span>
+          <h2>DHIA Matcha</h2>
+          <div class="tagline">Sweet Sips, Chill Vibes.</div>
           <p>
-            Inspired by modern minimalist matcha cafés, this concept blends
-            premium ceremonial matcha, soft coffee tones, and a clean white-and-green
-            atmosphere for a fresh everyday experience.
+            A clean and refreshing matcha and coffee concept with a soft white-and-green
+            aesthetic. Crafted for daily cravings, beautiful pours, and cozy moments.
           </p>
+
           <div class="hero-actions">
-            <a href="#menu" class="btn btn-primary">Explore Menu</a>
-            <a href="#visit" class="btn btn-outline">Visit Us</a>
+            <a
+              class="btn btn-whatsapp"
+              href="https://wa.me/601162927986?text=Hi%20DHIA%20Matcha%2C%20I%20want%20to%20place%20an%20order."
+              target="_blank"
+            >Order on WhatsApp</a>
+
+            <a
+              class="btn btn-outline"
+              href="https://share.google/rrZfDdQZXEW2A0OJL"
+              target="_blank"
+            >View Location</a>
           </div>
         </div>
 
-        <div class="hero-visual">
-          <div class="visual-main hero-card"></div>
-          <div class="mini-grid">
+        <div class="hero-card">
+          <div class="hero-video">
+            <video autoplay muted loop playsinline controls>
+              <source src="dhiamatcha__2026-01-13T065701.000Z.mp4" type="video/mp4">
+            </video>
+          </div>
+
+          <div class="mini-info">
             <div class="mini-box">
-              <h4>Signature Matcha</h4>
-              <p>Silky, earthy, bright, and made for everyday sipping.</p>
+              <h4>Freshly Crafted</h4>
+              <p>Watch the real process behind your drinks, from prep to beautiful finish.</p>
             </div>
             <div class="mini-box">
-              <h4>Specialty Coffee</h4>
-              <p>Balanced espresso drinks with a soft, clean finish.</p>
+              <h4>Coffee & Matcha Art</h4>
+              <p>Soft textures, smooth pours, and drinks made to look as good as they taste.</p>
             </div>
           </div>
         </div>
@@ -469,104 +573,163 @@
     <section id="menu">
       <div class="container">
         <div class="section-head">
-          <span>Menu</span>
-          <h2>Simple drinks, made beautifully</h2>
+          <span>Menu Highlights</span>
+          <h3>Simple, aesthetic, and refreshing</h3>
           <p>
-            A minimal menu focused on quality ingredients, clean taste, and a soft café mood.
+            A clean menu concept built around matcha, soft coffee drinks, and chill café energy.
           </p>
         </div>
 
         <div class="menu-grid">
-          <article class="card">
-            <div class="card-image" style="background-image:url('https://images.unsplash.com/photo-1515823662972-da6a2e4d3002?auto=format&fit=crop&w=1200&q=80');"></div>
+          <div class="card">
+            <div class="card-media"></div>
             <div class="card-content">
-              <h3>Iced Matcha Latte</h3>
-              <p>Premium matcha whisked smooth with fresh milk over ice.</p>
-              <div class="price">$6.50</div>
+              <h4>Signature Matcha Latte</h4>
+              <p>Rich green matcha with a smooth and creamy finish.</p>
+              <div class="price">Best Seller</div>
             </div>
-          </article>
+          </div>
 
-          <article class="card">
-            <div class="card-image" style="background-image:url('https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=1200&q=80');"></div>
+          <div class="card">
+            <div class="card-media"></div>
             <div class="card-content">
-              <h3>Hot Matcha Cloud</h3>
-              <p>Warm, creamy, and softly sweet with a delicate green finish.</p>
-              <div class="price">$6.00</div>
+              <h4>Iced Matcha Series</h4>
+              <p>Refreshing and vibrant for your everyday sweet sip fix.</p>
+              <div class="price">Fresh Pick</div>
             </div>
-          </article>
+          </div>
 
-          <article class="card">
-            <div class="card-image" style="background-image:url('https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=1200&q=80');"></div>
+          <div class="card">
+            <div class="card-media"></div>
             <div class="card-content">
-              <h3>House Latte</h3>
-              <p>Classic espresso and milk with a smooth, balanced profile.</p>
-              <div class="price">$5.50</div>
+              <h4>Coffee Art Drinks</h4>
+              <p>Beautifully poured coffee with clean taste and café style.</p>
+              <div class="price">Handcrafted</div>
             </div>
-          </article>
+          </div>
 
-          <article class="card">
-            <div class="card-image" style="background-image:url('https://images.unsplash.com/photo-1517705008128-361805f42e86?auto=format&fit=crop&w=1200&q=80');"></div>
+          <div class="card">
+            <div class="card-media"></div>
             <div class="card-content">
-              <h3>Dirty Matcha</h3>
-              <p>A layered matcha and espresso drink for green tea lovers who want depth.</p>
-              <div class="price">$7.00</div>
+              <h4>Chill Vibes Specials</h4>
+              <p>Soft, photogenic drinks made for relaxing moments and sharing.</p>
+              <div class="price">Seasonal Mood</div>
             </div>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section id="story">
-      <div class="container story">
-        <div class="story-image"></div>
-
-        <div class="story-box">
-          <h2>Minimal, fresh, and made for slow moments</h2>
-          <p>
-            This brand concept is built around a quiet café mood: soft natural light,
-            white surfaces, leafy green tones, and drinks that look as calm as they taste.
-          </p>
-          <p>
-            The visual direction takes inspiration from modern matcha cafés on Instagram,
-            but keeps the website original, clean, and easy to expand into a real brand later.
-          </p>
-
-          <div class="story-points">
-            <div>White + green palette for a clean premium look</div>
-            <div>Matcha-forward identity with coffee support</div>
-            <div>Simple aesthetic that works for café, kiosk, or online orders</div>
           </div>
         </div>
       </div>
     </section>
 
-    <section id="gallery">
-      <div class="container">
-        <div class="section-head">
-          <span>Gallery</span>
-          <h2>Soft green café mood</h2>
-          <p>
-            A visual direction focused on freshness, calm energy, and elegant everyday drinks.
-          </p>
+    <section id="about">
+      <div class="container about-grid">
+        <div class="about-logo">
+          <img src="599209870_18088751050962464_939712052411691412_n.jpg" alt="DHIA Matcha Logo">
         </div>
 
-        <div class="gallery-grid">
-          <div class="gallery-item gallery-1"></div>
-          <div class="gallery-item gallery-2"></div>
-          <div class="gallery-item gallery-3"></div>
+        <div class="about-box">
+          <h3>Refreshing drinks with a soft café mood</h3>
+          <p>
+            DHIA Matcha brings together premium matcha vibes, cozy coffee moments,
+            and a clean aesthetic that feels light, modern, and welcoming.
+          </p>
+          <p>
+            The visual identity stays minimal with white and green tones, while the drinks
+            and videos highlight the craft, art, and care behind every cup.
+          </p>
+
+          <div class="points">
+            <div>Matcha-forward branding with clean café energy</div>
+            <div>Real drink-making moments shown through your videos</div>
+            <div>Perfect for social sharing, takeaway orders, and café branding</div>
+          </div>
         </div>
       </div>
     </section>
 
-    <section id="visit">
+    <section id="moments">
+      <div class="container">
+        <div class="section-head">
+          <span>Real Moments</span>
+          <h3>How we work, pour, and serve</h3>
+          <p>
+            These videos show the feel of DHIA Matcha: the making process, the coffee art,
+            and the chill café vibe behind every order.
+          </p>
+        </div>
+
+        <div class="video-grid">
+          <div class="video-card">
+            <video autoplay muted loop playsinline controls>
+              <source src="dhiamatcha__2026-01-13T065701.000Z.mp4" type="video/mp4">
+            </video>
+            <div class="video-caption">
+              <h4>Work Process</h4>
+              <p>Real behind-the-counter moments and handcrafted drink preparation.</p>
+            </div>
+          </div>
+
+          <div class="video-card">
+            <video autoplay muted loop playsinline controls>
+              <source src="dhiamatcha__2025-12-25T183657.000Z.mp4" type="video/mp4">
+            </video>
+            <div class="video-caption">
+              <h4>Coffee Art</h4>
+              <p>Beautiful pours, texture, and visual detail in every cup.</p>
+            </div>
+          </div>
+
+          <div class="video-card">
+            <video autoplay muted loop playsinline controls>
+              <source src="dhiamatcha__2025-12-11T112044.000Z.mp4" type="video/mp4">
+            </video>
+            <div class="video-caption">
+              <h4>Chill Vibes</h4>
+              <p>The soft energy and aesthetic mood that define DHIA Matcha.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="socials">
+          <a class="social-chip" href="https://instagram.com/dhiamatcha" target="_blank">Instagram @dhiamatcha</a>
+          <a class="social-chip" href="https://tiktok.com/@dhiamatcha" target="_blank">TikTok @dhiamatcha</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact">
       <div class="container">
         <div class="cta">
-          <h2>Your daily matcha & coffee stop</h2>
+          <h3>Order your sweet sip today</h3>
           <p>
-            Open daily for handcrafted matcha, smooth espresso, and a clean modern café atmosphere.
-            Perfect for studying, catching up, or taking a quiet break.
+            Craving matcha or coffee? Contact DHIA Matcha on WhatsApp, follow on Instagram
+            and TikTok, or open the map to find the location.
           </p>
-          <a href="#" class="btn btn-primary">Order Now</a>
+
+          <div class="cta-actions">
+            <a
+              class="btn btn-whatsapp"
+              href="https://wa.me/601162927986?text=Hi%20DHIA%20Matcha%2C%20I%20want%20to%20order."
+              target="_blank"
+            >WhatsApp Order</a>
+
+            <a
+              class="btn btn-outline"
+              href="https://instagram.com/dhiamatcha"
+              target="_blank"
+            >Instagram</a>
+
+            <a
+              class="btn btn-outline"
+              href="https://tiktok.com/@dhiamatcha"
+              target="_blank"
+            >TikTok</a>
+
+            <a
+              class="btn btn-primary"
+              href="https://share.google/rrZfDdQZXEW2A0OJL"
+              target="_blank"
+            >Open Location</a>
+          </div>
         </div>
       </div>
     </section>
@@ -574,8 +737,8 @@
 
   <footer>
     <div class="container footer-row">
-      <div>© 2026 Matcha & Coffee</div>
-      <div>Fresh drinks • White & green aesthetic • Minimal café concept</div>
+      <div>© 2026 DHIA Matcha</div>
+      <div>Sweet Sips, Chill Vibes.</div>
     </div>
   </footer>
 </body>
