@@ -3,7 +3,349 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DHIA Matcha</title>
+  <title>DHIA Matcha Site Editor</title>
+  <style>
+    :root{
+      --green:#5aa78d;
+      --green-dark:#2d6f5a;
+      --green-soft:#e7f6ef;
+      --bg:#f7fbf8;
+      --white:#ffffff;
+      --text:#17352c;
+      --muted:#5f746c;
+      --line:#d7ebe2;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:Arial,Helvetica,sans-serif;
+      background:var(--bg);
+      color:var(--text);
+    }
+    .app{
+      display:grid;
+      grid-template-columns:420px 1fr;
+      min-height:100vh;
+    }
+    .panel{
+      background:#fff;
+      border-right:1px solid var(--line);
+      padding:22px;
+      overflow:auto;
+    }
+    .preview-wrap{
+      padding:18px;
+      overflow:auto;
+    }
+    h1{
+      margin:0 0 8px;
+      font-size:1.5rem;
+      color:var(--green-dark);
+    }
+    .sub{
+      margin:0 0 18px;
+      color:var(--muted);
+      font-size:.95rem;
+    }
+    .group{
+      border:1px solid var(--line);
+      background:#fff;
+      border-radius:18px;
+      padding:16px;
+      margin-bottom:16px;
+    }
+    .group h2{
+      margin:0 0 12px;
+      font-size:1rem;
+      color:var(--green-dark);
+    }
+    label{
+      display:block;
+      font-size:.9rem;
+      font-weight:700;
+      margin:12px 0 6px;
+      color:var(--green-dark);
+    }
+    input, textarea{
+      width:100%;
+      padding:12px 13px;
+      border:1px solid var(--line);
+      border-radius:12px;
+      font:inherit;
+      background:#fff;
+    }
+    textarea{
+      min-height:90px;
+      resize:vertical;
+    }
+    .row{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:10px;
+    }
+    button{
+      border:0;
+      border-radius:12px;
+      padding:12px 14px;
+      font-weight:700;
+      cursor:pointer;
+      font:inherit;
+    }
+    .btn-primary{
+      background:var(--green);
+      color:#fff;
+    }
+    .btn-primary:hover{background:var(--green-dark)}
+    .btn-soft{
+      background:var(--green-soft);
+      color:var(--green-dark);
+    }
+    .btn-line{
+      background:#fff;
+      color:var(--green-dark);
+      border:1px solid var(--line);
+    }
+    .actions{
+      display:grid;
+      gap:10px;
+    }
+    .hint{
+      margin-top:8px;
+      font-size:.84rem;
+      color:var(--muted);
+    }
+    .menu-item{
+      border:1px dashed var(--line);
+      border-radius:14px;
+      padding:12px;
+      margin-bottom:12px;
+      background:#fcfffd;
+    }
+    .danger{
+      background:#ffe8e8;
+      color:#8a2b2b;
+    }
+    .preview-frame{
+      width:100%;
+      min-height:92vh;
+      border:1px solid var(--line);
+      border-radius:18px;
+      background:#fff;
+    }
+    @media (max-width: 980px){
+      .app{grid-template-columns:1fr}
+      .panel{border-right:0;border-bottom:1px solid var(--line)}
+      .preview-frame{min-height:75vh}
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside class="panel">
+      <h1>DHIA Matcha Editor</h1>
+      <p class="sub">Edit your website without touching code.</p>
+
+      <div class="group">
+        <h2>Brand</h2>
+        <label>Brand Name</label>
+        <input id="brandName" value="DHIA Matcha">
+
+        <label>Tagline</label>
+        <input id="tagline" value="Sweet Sips, Chill Vibes.">
+
+        <label>Hero Badge</label>
+        <input id="badge" value="Fresh matcha • Coffee art • Chill vibes">
+
+        <label>Hero Description</label>
+        <textarea id="heroText">A clean and refreshing matcha and coffee concept with a soft white-and-green aesthetic. Crafted for daily cravings, beautiful pours, and cozy moments.</textarea>
+      </div>
+
+      <div class="group">
+        <h2>Links</h2>
+        <label>WhatsApp Number</label>
+        <input id="whatsapp" value="601162927986">
+
+        <label>Instagram URL</label>
+        <input id="instagram" value="https://instagram.com/dhiamatcha">
+
+        <label>TikTok URL</label>
+        <input id="tiktok" value="https://tiktok.com/@dhiamatcha">
+
+        <label>Location URL</label>
+        <input id="location" value="https://share.google/rrZfDdQZXEW2A0OJL">
+      </div>
+
+      <div class="group">
+        <h2>Logo & Videos</h2>
+        <label>Logo Image</label>
+        <input id="logoFile" type="file" accept="image/*">
+
+        <label>Hero Video</label>
+        <input id="heroVideoFile" type="file" accept="video/*">
+
+        <label>Moment Video 1</label>
+        <input id="video1File" type="file" accept="video/*">
+
+        <label>Moment Video 2</label>
+        <input id="video2File" type="file" accept="video/*">
+
+        <label>Moment Video 3</label>
+        <input id="video3File" type="file" accept="video/*">
+
+        <div class="hint">Videos get embedded into the HTML, so large videos make the file very big.</div>
+      </div>
+
+      <div class="group">
+        <h2>About Section</h2>
+        <label>About Title</label>
+        <input id="aboutTitle" value="Refreshing drinks with a soft café mood">
+
+        <label>About Paragraph 1</label>
+        <textarea id="aboutP1">DHIA Matcha brings together premium matcha vibes, cozy coffee moments, and a clean aesthetic that feels light, modern, and welcoming.</textarea>
+
+        <label>About Paragraph 2</label>
+        <textarea id="aboutP2">The visual identity stays minimal with white and green tones, while the drinks and videos highlight the craft, art, and care behind every cup.</textarea>
+      </div>
+
+      <div class="group">
+        <h2>Menu Items</h2>
+        <div id="menuItems"></div>
+        <button class="btn-soft" id="addMenuBtn" type="button">Add Menu Item</button>
+      </div>
+
+      <div class="group">
+        <h2>Export / Save</h2>
+        <div class="actions">
+          <button class="btn-primary" id="downloadHtmlBtn" type="button">Download Website HTML</button>
+          <button class="btn-soft" id="saveProjectBtn" type="button">Save Project JSON</button>
+          <input id="loadProjectFile" type="file" accept=".json,application/json">
+          <button class="btn-line danger" id="resetBtn" type="button">Reset to Default</button>
+        </div>
+        <div class="hint">Open the exported HTML directly or upload it to GitHub Pages.</div>
+      </div>
+    </aside>
+
+    <main class="preview-wrap">
+      <iframe id="previewFrame" class="preview-frame"></iframe>
+    </main>
+  </div>
+
+  <script>
+    const defaultMenu = [
+      { title: "Signature Matcha Latte", desc: "Rich green matcha with a smooth and creamy finish.", tag: "Best Seller" },
+      { title: "Iced Matcha Series", desc: "Refreshing and vibrant for your everyday sweet sip fix.", tag: "Fresh Pick" },
+      { title: "Coffee Art Drinks", desc: "Beautifully poured coffee with clean taste and café style.", tag: "Handcrafted" },
+      { title: "Chill Vibes Specials", desc: "Soft, photogenic drinks made for relaxing moments and sharing.", tag: "Seasonal Mood" }
+    ];
+
+    const state = {
+      brandName: "DHIA Matcha",
+      tagline: "Sweet Sips, Chill Vibes.",
+      badge: "Fresh matcha • Coffee art • Chill vibes",
+      heroText: "A clean and refreshing matcha and coffee concept with a soft white-and-green aesthetic. Crafted for daily cravings, beautiful pours, and cozy moments.",
+      whatsapp: "601162927986",
+      instagram: "https://instagram.com/dhiamatcha",
+      tiktok: "https://tiktok.com/@dhiamatcha",
+      location: "https://share.google/rrZfDdQZXEW2A0OJL",
+      aboutTitle: "Refreshing drinks with a soft café mood",
+      aboutP1: "DHIA Matcha brings together premium matcha vibes, cozy coffee moments, and a clean aesthetic that feels light, modern, and welcoming.",
+      aboutP2: "The visual identity stays minimal with white and green tones, while the drinks and videos highlight the craft, art, and care behind every cup.",
+      logoData: "",
+      heroVideoData: "",
+      video1Data: "",
+      video2Data: "",
+      video3Data: "",
+      menu: JSON.parse(JSON.stringify(defaultMenu))
+    };
+
+    const ids = [
+      "brandName","tagline","badge","heroText","whatsapp","instagram","tiktok","location",
+      "aboutTitle","aboutP1","aboutP2"
+    ];
+
+    function escapeHtml(str = "") {
+      return str
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;");
+    }
+
+    function makeWhatsAppUrl(number, text) {
+      const clean = (number || "").replace(/\D/g, "");
+      return `https://wa.me/${clean}?text=${encodeURIComponent(text)}`;
+    }
+
+    function logoSrc() {
+      return state.logoData || "https://dummyimage.com/500x500/e7f6ef/2d6f5a&text=DHIA+Matcha";
+    }
+
+    function videoBlock(src, fallbackText) {
+      if (!src) {
+        return `<div style="height:100%;display:flex;align-items:center;justify-content:center;color:#5f746c;background:#f3faf6;padding:20px;text-align:center;">${escapeHtml(fallbackText)}</div>`;
+      }
+      return `<video autoplay muted loop playsinline controls><source src="${src}" type="video/mp4"></video>`;
+    }
+
+    function renderMenuEditor() {
+      const wrap = document.getElementById("menuItems");
+      wrap.innerHTML = "";
+      state.menu.forEach((item, index) => {
+        const el = document.createElement("div");
+        el.className = "menu-item";
+        el.innerHTML = `
+          <label>Item Title</label>
+          <input data-menu="${index}" data-key="title" value="${escapeHtml(item.title)}">
+          <label>Description</label>
+          <textarea data-menu="${index}" data-key="desc">${escapeHtml(item.desc)}</textarea>
+          <label>Small Tag</label>
+          <input data-menu="${index}" data-key="tag" value="${escapeHtml(item.tag)}">
+          <div style="margin-top:10px;">
+            <button type="button" class="btn-line removeMenuBtn" data-remove="${index}">Remove</button>
+          </div>
+        `;
+        wrap.appendChild(el);
+      });
+
+      wrap.querySelectorAll("[data-menu]").forEach(input => {
+        input.addEventListener("input", e => {
+          const i = Number(e.target.getAttribute("data-menu"));
+          const key = e.target.getAttribute("data-key");
+          state.menu[i][key] = e.target.value;
+          updatePreview();
+        });
+      });
+
+      wrap.querySelectorAll(".removeMenuBtn").forEach(btn => {
+        btn.addEventListener("click", e => {
+          const i = Number(e.target.getAttribute("data-remove"));
+          state.menu.splice(i, 1);
+          renderMenuEditor();
+          updatePreview();
+        });
+      });
+    }
+
+    function generateSiteHtml() {
+      const menuHtml = state.menu.map(item => `
+        <div class="card">
+          <div class="card-media">
+            <img src="${logoSrc()}" alt="${escapeHtml(state.brandName)} logo">
+          </div>
+          <div class="card-content">
+            <h4>${escapeHtml(item.title)}</h4>
+            <p>${escapeHtml(item.desc)}</p>
+            <div class="price">${escapeHtml(item.tag)}</div>
+          </div>
+        </div>
+      `).join("");
+
+      return `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>${escapeHtml(state.brandName)}</title>
   <style>
     :root {
       --green: #5aa78d;
@@ -15,490 +357,85 @@
       --muted: #5f746c;
       --line: #d7ebe2;
     }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
-
-    body {
-      font-family: Arial, Helvetica, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.6;
-    }
-
-    a {
-      text-decoration: none;
-      color: inherit;
-    }
-
-    img,
-    video {
-      max-width: 100%;
-      display: block;
-    }
-
-    .container {
-      width: min(1120px, 92%);
-      margin: auto;
-    }
-
-    header {
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-      background: rgba(255, 255, 255, 0.92);
-      backdrop-filter: blur(10px);
-      border-bottom: 1px solid var(--line);
-    }
-
-    .nav {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 20px;
-      padding: 14px 0;
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .brand img {
-      width: 54px;
-      height: 54px;
-      object-fit: contain;
-      border-radius: 14px;
-      background: white;
-      padding: 6px;
-      border: 1px solid var(--line);
-    }
-
-    .brand-text h1 {
-      font-size: 1.15rem;
-      color: var(--green-dark);
-      line-height: 1.1;
-    }
-
-    .brand-text p {
-      font-size: 0.82rem;
-      color: var(--muted);
-    }
-
-    .nav-links {
-      display: flex;
-      gap: 24px;
-      color: var(--muted);
-      font-size: 0.95rem;
-      flex-wrap: wrap;
-    }
-
-    .btn {
-      display: inline-block;
-      padding: 13px 22px;
-      border-radius: 999px;
-      font-weight: 700;
-      transition: 0.2s ease;
-      border: 1px solid transparent;
-    }
-
-    .btn-primary {
-      background: var(--green);
-      color: white;
-    }
-
-    .btn-primary:hover {
-      background: var(--green-dark);
-    }
-
-    .btn-outline {
-      background: white;
-      color: var(--green-dark);
-      border-color: var(--green);
-    }
-
-    .btn-outline:hover {
-      background: var(--green-soft);
-    }
-
-    .btn-whatsapp {
-      background: #25d366;
-      color: white;
-    }
-
-    .btn-whatsapp:hover {
-      filter: brightness(0.95);
-    }
-
-    .hero {
-      padding: 80px 0 56px;
-    }
-
-    .hero-grid {
-      display: grid;
-      grid-template-columns: 1.05fr 0.95fr;
-      gap: 34px;
-      align-items: center;
-    }
-
-    .badge {
-      display: inline-block;
-      background: var(--green-soft);
-      color: var(--green-dark);
-      padding: 8px 14px;
-      border-radius: 999px;
-      font-size: 0.86rem;
-      font-weight: 700;
-      margin-bottom: 18px;
-    }
-
-    .hero h2 {
-      font-size: clamp(2.3rem, 4vw, 4.5rem);
-      line-height: 1.05;
-      color: var(--green-dark);
-      margin-bottom: 14px;
-    }
-
-    .hero .tagline {
-      font-size: 1.15rem;
-      font-weight: 700;
-      color: var(--green);
-      margin-bottom: 12px;
-    }
-
-    .hero p {
-      color: var(--muted);
-      font-size: 1.02rem;
-      max-width: 560px;
-      margin-bottom: 24px;
-    }
-
-    .hero-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 14px;
-    }
-
-    .hero-card {
-      background: white;
-      border: 1px solid var(--line);
-      border-radius: 30px;
-      padding: 18px;
-      box-shadow: 0 12px 35px rgba(45, 111, 90, 0.08);
-    }
-
-    .hero-video {
-      border-radius: 24px;
-      overflow: hidden;
-      border: 1px solid var(--line);
-      background: #000;
-    }
-
-    .hero-video video {
-      width: 100%;
-      height: 420px;
-      object-fit: cover;
-    }
-
-    .mini-info {
-      margin-top: 16px;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-    }
-
-    .mini-box {
-      background: white;
-      border: 1px solid var(--line);
-      border-radius: 20px;
-      padding: 16px;
-    }
-
-    .mini-box h4 {
-      color: var(--green-dark);
-      margin-bottom: 6px;
-      font-size: 1rem;
-    }
-
-    .mini-box p {
-      color: var(--muted);
-      font-size: 0.93rem;
-    }
-
-    section {
-      padding: 72px 0;
-    }
-
-    .section-head {
-      text-align: center;
-      margin-bottom: 36px;
-    }
-
-    .section-head span {
-      color: var(--green);
-      text-transform: uppercase;
-      font-size: 0.88rem;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-    }
-
-    .section-head h3 {
-      font-size: clamp(1.9rem, 3vw, 3rem);
-      color: var(--green-dark);
-      margin-top: 10px;
-    }
-
-    .section-head p {
-      color: var(--muted);
-      max-width: 700px;
-      margin: 12px auto 0;
-    }
-
-    .menu-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 22px;
-    }
-
-    .card {
-      background: white;
-      border: 1px solid var(--line);
-      border-radius: 24px;
-      overflow: hidden;
-      box-shadow: 0 8px 24px rgba(45, 111, 90, 0.05);
-    }
-
-    .card-media {
-      height: 220px;
-      background: linear-gradient(rgba(90,167,141,0.10), rgba(90,167,141,0.10)),
-        url("599209870_18088751050962464_939712052411691412_n.jpg") center/contain no-repeat,
-        #f4fbf7;
-      border-bottom: 1px solid var(--line);
-    }
-
-    .card-content {
-      padding: 18px;
-    }
-
-    .card-content h4 {
-      color: var(--green-dark);
-      margin-bottom: 8px;
-      font-size: 1.1rem;
-    }
-
-    .card-content p {
-      color: var(--muted);
-      font-size: 0.95rem;
-      margin-bottom: 10px;
-    }
-
-    .price {
-      color: var(--green);
-      font-weight: 700;
-    }
-
-    .about-grid {
-      display: grid;
-      grid-template-columns: 0.9fr 1.1fr;
-      gap: 30px;
-      align-items: center;
-    }
-
-    .about-logo {
-      background: white;
-      border: 1px solid var(--line);
-      border-radius: 30px;
-      padding: 30px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 360px;
-      box-shadow: 0 12px 35px rgba(45, 111, 90, 0.06);
-    }
-
-    .about-logo img {
-      width: min(320px, 100%);
-      object-fit: contain;
-    }
-
-    .about-box {
-      background: white;
-      border: 1px solid var(--line);
-      border-radius: 30px;
-      padding: 32px;
-    }
-
-    .about-box h3 {
-      font-size: clamp(2rem, 3vw, 3rem);
-      color: var(--green-dark);
-      margin-bottom: 14px;
-    }
-
-    .about-box p {
-      color: var(--muted);
-      margin-bottom: 15px;
-    }
-
-    .points {
-      display: grid;
-      gap: 12px;
-      margin-top: 18px;
-    }
-
-    .points div {
-      background: var(--green-soft);
-      color: var(--green-dark);
-      padding: 14px 16px;
-      border-radius: 16px;
-      font-weight: 600;
-    }
-
-    .video-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 18px;
-    }
-
-    .video-card {
-      background: white;
-      border: 1px solid var(--line);
-      border-radius: 24px;
-      overflow: hidden;
-      box-shadow: 0 8px 24px rgba(45, 111, 90, 0.05);
-    }
-
-    .video-card video {
-      width: 100%;
-      height: 430px;
-      object-fit: cover;
-      background: #000;
-    }
-
-    .video-caption {
-      padding: 16px;
-    }
-
-    .video-caption h4 {
-      color: var(--green-dark);
-      margin-bottom: 6px;
-    }
-
-    .video-caption p {
-      color: var(--muted);
-      font-size: 0.94rem;
-    }
-
-    .socials {
-      display: flex;
-      justify-content: center;
-      gap: 16px;
-      flex-wrap: wrap;
-      margin-top: 22px;
-    }
-
-    .social-chip {
-      background: white;
-      border: 1px solid var(--line);
-      border-radius: 999px;
-      padding: 12px 18px;
-      color: var(--green-dark);
-      font-weight: 700;
-    }
-
-    .cta {
-      background: white;
-      border: 1px solid var(--line);
-      border-radius: 30px;
-      padding: 48px 26px;
-      text-align: center;
-      box-shadow: 0 10px 30px rgba(45, 111, 90, 0.05);
-    }
-
-    .cta h3 {
-      font-size: clamp(2rem, 3vw, 3rem);
-      color: var(--green-dark);
-      margin-bottom: 10px;
-    }
-
-    .cta p {
-      color: var(--muted);
-      max-width: 680px;
-      margin: 0 auto 22px;
-    }
-
-    .cta-actions {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 14px;
-    }
-
-    footer {
-      padding: 34px 0 46px;
-    }
-
-    .footer-row {
-      border-top: 1px solid var(--line);
-      padding-top: 20px;
-      display: flex;
-      justify-content: space-between;
-      gap: 16px;
-      flex-wrap: wrap;
-      color: var(--muted);
-      font-size: 0.94rem;
-    }
-
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: Arial, Helvetica, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+    a { text-decoration: none; color: inherit; }
+    img, video { max-width: 100%; display: block; }
+    .container { width: min(1120px, 92%); margin: auto; }
+    header { position: sticky; top: 0; z-index: 1000; background: rgba(255,255,255,0.92); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
+    .nav { display: flex; justify-content: space-between; align-items: center; gap: 20px; padding: 14px 0; }
+    .brand { display: flex; align-items: center; gap: 12px; }
+    .brand img { width: 54px; height: 54px; object-fit: contain; border-radius: 14px; background: white; padding: 6px; border: 1px solid var(--line); }
+    .brand-text h1 { font-size: 1.15rem; color: var(--green-dark); line-height: 1.1; }
+    .brand-text p { font-size: 0.82rem; color: var(--muted); }
+    .nav-links { display: flex; gap: 24px; color: var(--muted); font-size: 0.95rem; flex-wrap: wrap; }
+    .btn { display: inline-block; padding: 13px 22px; border-radius: 999px; font-weight: 700; transition: 0.2s ease; border: 1px solid transparent; }
+    .btn-primary { background: var(--green); color: white; }
+    .btn-primary:hover { background: var(--green-dark); }
+    .btn-outline { background: white; color: var(--green-dark); border-color: var(--green); }
+    .btn-outline:hover { background: var(--green-soft); }
+    .btn-whatsapp { background: #25d366; color: white; }
+    .hero { padding: 80px 0 56px; }
+    .hero-grid { display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 34px; align-items: center; }
+    .badge { display: inline-block; background: var(--green-soft); color: var(--green-dark); padding: 8px 14px; border-radius: 999px; font-size: 0.86rem; font-weight: 700; margin-bottom: 18px; }
+    .hero h2 { font-size: clamp(2.3rem, 4vw, 4.5rem); line-height: 1.05; color: var(--green-dark); margin-bottom: 14px; }
+    .hero .tagline { font-size: 1.15rem; font-weight: 700; color: var(--green); margin-bottom: 12px; }
+    .hero p { color: var(--muted); font-size: 1.02rem; max-width: 560px; margin-bottom: 24px; }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 14px; }
+    .hero-card { background: white; border: 1px solid var(--line); border-radius: 30px; padding: 18px; box-shadow: 0 12px 35px rgba(45, 111, 90, 0.08); }
+    .hero-video { border-radius: 24px; overflow: hidden; border: 1px solid var(--line); background: #000; }
+    .hero-video video, .video-card video { width: 100%; height: 420px; object-fit: cover; background: #000; }
+    .mini-info { margin-top: 16px; display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .mini-box { background: white; border: 1px solid var(--line); border-radius: 20px; padding: 16px; }
+    .mini-box h4 { color: var(--green-dark); margin-bottom: 6px; font-size: 1rem; }
+    .mini-box p { color: var(--muted); font-size: 0.93rem; }
+    section { padding: 72px 0; }
+    .section-head { text-align: center; margin-bottom: 36px; }
+    .section-head span { color: var(--green); text-transform: uppercase; font-size: 0.88rem; font-weight: 700; letter-spacing: 0.08em; }
+    .section-head h3 { font-size: clamp(1.9rem, 3vw, 3rem); color: var(--green-dark); margin-top: 10px; }
+    .section-head p { color: var(--muted); max-width: 700px; margin: 12px auto 0; }
+    .menu-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 22px; }
+    .card { background: white; border: 1px solid var(--line); border-radius: 24px; overflow: hidden; box-shadow: 0 8px 24px rgba(45, 111, 90, 0.05); }
+    .card-media { height: 220px; background: linear-gradient(rgba(90,167,141,0.10), rgba(90,167,141,0.10)); display:flex; align-items:center; justify-content:center; padding:20px; border-bottom: 1px solid var(--line); }
+    .card-media img { max-height: 100%; object-fit: contain; }
+    .card-content { padding: 18px; }
+    .card-content h4 { color: var(--green-dark); margin-bottom: 8px; font-size: 1.1rem; }
+    .card-content p { color: var(--muted); font-size: 0.95rem; margin-bottom: 10px; }
+    .price { color: var(--green); font-weight: 700; }
+    .about-grid { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 30px; align-items: center; }
+    .about-logo { background: white; border: 1px solid var(--line); border-radius: 30px; padding: 30px; display: flex; align-items: center; justify-content: center; min-height: 360px; box-shadow: 0 12px 35px rgba(45, 111, 90, 0.06); }
+    .about-logo img { width: min(320px, 100%); object-fit: contain; }
+    .about-box { background: white; border: 1px solid var(--line); border-radius: 30px; padding: 32px; }
+    .about-box h3 { font-size: clamp(2rem, 3vw, 3rem); color: var(--green-dark); margin-bottom: 14px; }
+    .about-box p { color: var(--muted); margin-bottom: 15px; }
+    .points { display: grid; gap: 12px; margin-top: 18px; }
+    .points div { background: var(--green-soft); color: var(--green-dark); padding: 14px 16px; border-radius: 16px; font-weight: 600; }
+    .video-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+    .video-card { background: white; border: 1px solid var(--line); border-radius: 24px; overflow: hidden; box-shadow: 0 8px 24px rgba(45, 111, 90, 0.05); }
+    .video-caption { padding: 16px; }
+    .video-caption h4 { color: var(--green-dark); margin-bottom: 6px; }
+    .video-caption p { color: var(--muted); font-size: 0.94rem; }
+    .socials { display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; margin-top: 22px; }
+    .social-chip { background: white; border: 1px solid var(--line); border-radius: 999px; padding: 12px 18px; color: var(--green-dark); font-weight: 700; }
+    .cta { background: white; border: 1px solid var(--line); border-radius: 30px; padding: 48px 26px; text-align: center; box-shadow: 0 10px 30px rgba(45, 111, 90, 0.05); }
+    .cta h3 { font-size: clamp(2rem, 3vw, 3rem); color: var(--green-dark); margin-bottom: 10px; }
+    .cta p { color: var(--muted); max-width: 680px; margin: 0 auto 22px; }
+    .cta-actions { display: flex; justify-content: center; flex-wrap: wrap; gap: 14px; }
+    footer { padding: 34px 0 46px; }
+    .footer-row { border-top: 1px solid var(--line); padding-top: 20px; display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; color: var(--muted); font-size: 0.94rem; }
     @media (max-width: 1000px) {
-      .hero-grid,
-      .about-grid,
-      .menu-grid,
-      .video-grid {
-        grid-template-columns: 1fr 1fr;
-      }
-
-      .hero-grid,
-      .about-grid {
-        grid-template-columns: 1fr;
-      }
+      .hero-grid, .about-grid { grid-template-columns: 1fr; }
+      .menu-grid { grid-template-columns: 1fr 1fr; }
+      .video-grid { grid-template-columns: 1fr 1fr; }
     }
-
     @media (max-width: 700px) {
-      .nav {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-
-      .nav-links {
-        gap: 14px;
-      }
-
-      .menu-grid,
-      .video-grid,
-      .mini-info {
-        grid-template-columns: 1fr;
-      }
-
-      .hero-video video,
-      .video-card video {
-        height: 320px;
-      }
-
-      .hero-actions,
-      .cta-actions {
-        flex-direction: column;
-      }
-
-      .btn {
-        text-align: center;
-      }
+      .nav { flex-direction: column; align-items: flex-start; }
+      .nav-links { gap: 14px; }
+      .menu-grid, .video-grid, .mini-info { grid-template-columns: 1fr; }
+      .hero-video video, .video-card video { height: 320px; }
+      .hero-actions, .cta-actions { flex-direction: column; }
+      .btn { text-align: center; }
     }
   </style>
 </head>
@@ -506,13 +443,12 @@
   <header>
     <div class="container nav">
       <div class="brand">
-        <img src="599209870_18088751050962464_939712052411691412_n.jpg" alt="DHIA Matcha Logo">
+        <img src="${logoSrc()}" alt="${escapeHtml(state.brandName)} Logo">
         <div class="brand-text">
-          <h1>DHIA Matcha</h1>
-          <p>Sweet Sips, Chill Vibes.</p>
+          <h1>${escapeHtml(state.brandName)}</h1>
+          <p>${escapeHtml(state.tagline)}</p>
         </div>
       </div>
-
       <nav class="nav-links">
         <a href="#menu">Menu</a>
         <a href="#about">About</a>
@@ -526,36 +462,20 @@
     <section class="hero">
       <div class="container hero-grid">
         <div>
-          <span class="badge">Fresh matcha • Coffee art • Chill vibes</span>
-          <h2>DHIA Matcha</h2>
-          <div class="tagline">Sweet Sips, Chill Vibes.</div>
-          <p>
-            A clean and refreshing matcha and coffee concept with a soft white-and-green
-            aesthetic. Crafted for daily cravings, beautiful pours, and cozy moments.
-          </p>
-
+          <span class="badge">${escapeHtml(state.badge)}</span>
+          <h2>${escapeHtml(state.brandName)}</h2>
+          <div class="tagline">${escapeHtml(state.tagline)}</div>
+          <p>${escapeHtml(state.heroText)}</p>
           <div class="hero-actions">
-            <a
-              class="btn btn-whatsapp"
-              href="https://wa.me/601162927986?text=Hi%20DHIA%20Matcha%2C%20I%20want%20to%20place%20an%20order."
-              target="_blank"
-            >Order on WhatsApp</a>
-
-            <a
-              class="btn btn-outline"
-              href="https://share.google/rrZfDdQZXEW2A0OJL"
-              target="_blank"
-            >View Location</a>
+            <a class="btn btn-whatsapp" href="${makeWhatsAppUrl(state.whatsapp, `Hi ${state.brandName}, I want to place an order.`)}" target="_blank">Order on WhatsApp</a>
+            <a class="btn btn-outline" href="${escapeHtml(state.location)}" target="_blank">View Location</a>
           </div>
         </div>
 
         <div class="hero-card">
           <div class="hero-video">
-            <video autoplay muted loop playsinline controls>
-              <source src="dhiamatcha__2026-01-13T065701.000Z.mp4" type="video/mp4">
-            </video>
+            ${videoBlock(state.heroVideoData, "Upload a hero video")}
           </div>
-
           <div class="mini-info">
             <div class="mini-box">
               <h4>Freshly Crafted</h4>
@@ -575,47 +495,10 @@
         <div class="section-head">
           <span>Menu Highlights</span>
           <h3>Simple, aesthetic, and refreshing</h3>
-          <p>
-            A clean menu concept built around matcha, soft coffee drinks, and chill café energy.
-          </p>
+          <p>A clean menu concept built around matcha, soft coffee drinks, and chill café energy.</p>
         </div>
-
         <div class="menu-grid">
-          <div class="card">
-            <div class="card-media"></div>
-            <div class="card-content">
-              <h4>Signature Matcha Latte</h4>
-              <p>Rich green matcha with a smooth and creamy finish.</p>
-              <div class="price">Best Seller</div>
-            </div>
-          </div>
-
-          <div class="card">
-            <div class="card-media"></div>
-            <div class="card-content">
-              <h4>Iced Matcha Series</h4>
-              <p>Refreshing and vibrant for your everyday sweet sip fix.</p>
-              <div class="price">Fresh Pick</div>
-            </div>
-          </div>
-
-          <div class="card">
-            <div class="card-media"></div>
-            <div class="card-content">
-              <h4>Coffee Art Drinks</h4>
-              <p>Beautifully poured coffee with clean taste and café style.</p>
-              <div class="price">Handcrafted</div>
-            </div>
-          </div>
-
-          <div class="card">
-            <div class="card-media"></div>
-            <div class="card-content">
-              <h4>Chill Vibes Specials</h4>
-              <p>Soft, photogenic drinks made for relaxing moments and sharing.</p>
-              <div class="price">Seasonal Mood</div>
-            </div>
-          </div>
+          ${menuHtml}
         </div>
       </div>
     </section>
@@ -623,20 +506,12 @@
     <section id="about">
       <div class="container about-grid">
         <div class="about-logo">
-          <img src="599209870_18088751050962464_939712052411691412_n.jpg" alt="DHIA Matcha Logo">
+          <img src="${logoSrc()}" alt="${escapeHtml(state.brandName)} Logo">
         </div>
-
         <div class="about-box">
-          <h3>Refreshing drinks with a soft café mood</h3>
-          <p>
-            DHIA Matcha brings together premium matcha vibes, cozy coffee moments,
-            and a clean aesthetic that feels light, modern, and welcoming.
-          </p>
-          <p>
-            The visual identity stays minimal with white and green tones, while the drinks
-            and videos highlight the craft, art, and care behind every cup.
-          </p>
-
+          <h3>${escapeHtml(state.aboutTitle)}</h3>
+          <p>${escapeHtml(state.aboutP1)}</p>
+          <p>${escapeHtml(state.aboutP2)}</p>
           <div class="points">
             <div>Matcha-forward branding with clean café energy</div>
             <div>Real drink-making moments shown through your videos</div>
@@ -651,47 +526,36 @@
         <div class="section-head">
           <span>Real Moments</span>
           <h3>How we work, pour, and serve</h3>
-          <p>
-            These videos show the feel of DHIA Matcha: the making process, the coffee art,
-            and the chill café vibe behind every order.
-          </p>
+          <p>These videos show the feel of ${escapeHtml(state.brandName)}: the making process, the coffee art, and the chill café vibe behind every order.</p>
         </div>
 
         <div class="video-grid">
           <div class="video-card">
-            <video autoplay muted loop playsinline controls>
-              <source src="dhiamatcha__2026-01-13T065701.000Z.mp4" type="video/mp4">
-            </video>
+            ${videoBlock(state.video1Data, "Upload video 1")}
             <div class="video-caption">
               <h4>Work Process</h4>
               <p>Real behind-the-counter moments and handcrafted drink preparation.</p>
             </div>
           </div>
-
           <div class="video-card">
-            <video autoplay muted loop playsinline controls>
-              <source src="dhiamatcha__2025-12-25T183657.000Z.mp4" type="video/mp4">
-            </video>
+            ${videoBlock(state.video2Data, "Upload video 2")}
             <div class="video-caption">
               <h4>Coffee Art</h4>
               <p>Beautiful pours, texture, and visual detail in every cup.</p>
             </div>
           </div>
-
           <div class="video-card">
-            <video autoplay muted loop playsinline controls>
-              <source src="dhiamatcha__2025-12-11T112044.000Z.mp4" type="video/mp4">
-            </video>
+            ${videoBlock(state.video3Data, "Upload video 3")}
             <div class="video-caption">
               <h4>Chill Vibes</h4>
-              <p>The soft energy and aesthetic mood that define DHIA Matcha.</p>
+              <p>The soft energy and aesthetic mood that define ${escapeHtml(state.brandName)}.</p>
             </div>
           </div>
         </div>
 
         <div class="socials">
-          <a class="social-chip" href="https://instagram.com/dhiamatcha" target="_blank">Instagram @dhiamatcha</a>
-          <a class="social-chip" href="https://tiktok.com/@dhiamatcha" target="_blank">TikTok @dhiamatcha</a>
+          <a class="social-chip" href="${escapeHtml(state.instagram)}" target="_blank">Instagram</a>
+          <a class="social-chip" href="${escapeHtml(state.tiktok)}" target="_blank">TikTok</a>
         </div>
       </div>
     </section>
@@ -700,35 +564,12 @@
       <div class="container">
         <div class="cta">
           <h3>Order your sweet sip today</h3>
-          <p>
-            Craving matcha or coffee? Contact DHIA Matcha on WhatsApp, follow on Instagram
-            and TikTok, or open the map to find the location.
-          </p>
-
+          <p>Craving matcha or coffee? Contact ${escapeHtml(state.brandName)} on WhatsApp, follow on Instagram and TikTok, or open the map to find the location.</p>
           <div class="cta-actions">
-            <a
-              class="btn btn-whatsapp"
-              href="https://wa.me/601162927986?text=Hi%20DHIA%20Matcha%2C%20I%20want%20to%20order."
-              target="_blank"
-            >WhatsApp Order</a>
-
-            <a
-              class="btn btn-outline"
-              href="https://instagram.com/dhiamatcha"
-              target="_blank"
-            >Instagram</a>
-
-            <a
-              class="btn btn-outline"
-              href="https://tiktok.com/@dhiamatcha"
-              target="_blank"
-            >TikTok</a>
-
-            <a
-              class="btn btn-primary"
-              href="https://share.google/rrZfDdQZXEW2A0OJL"
-              target="_blank"
-            >Open Location</a>
+            <a class="btn btn-whatsapp" href="${makeWhatsAppUrl(state.whatsapp, `Hi ${state.brandName}, I want to order.`)}" target="_blank">WhatsApp Order</a>
+            <a class="btn btn-outline" href="${escapeHtml(state.instagram)}" target="_blank">Instagram</a>
+            <a class="btn btn-outline" href="${escapeHtml(state.tiktok)}" target="_blank">TikTok</a>
+            <a class="btn btn-primary" href="${escapeHtml(state.location)}" target="_blank">Open Location</a>
           </div>
         </div>
       </div>
@@ -737,9 +578,100 @@
 
   <footer>
     <div class="container footer-row">
-      <div>© 2026 DHIA Matcha</div>
-      <div>Sweet Sips, Chill Vibes.</div>
+      <div>© 2026 ${escapeHtml(state.brandName)}</div>
+      <div>${escapeHtml(state.tagline)}</div>
     </div>
   </footer>
+</body>
+</html>`;
+    }
+
+    function updatePreview() {
+      const html = generateSiteHtml();
+      const frame = document.getElementById("previewFrame");
+      frame.srcdoc = html;
+    }
+
+    function syncInputsToState() {
+      ids.forEach(id => {
+        const el = document.getElementById(id);
+        state[id] = el.value;
+      });
+      updatePreview();
+    }
+
+    function downloadFile(name, content, type) {
+      const blob = new Blob([content], { type });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = name;
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function readFileAsDataUrl(file, key) {
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        state[key] = reader.result;
+        updatePreview();
+      };
+      reader.readAsDataURL(file);
+    }
+
+    ids.forEach(id => {
+      document.getElementById(id).addEventListener("input", syncInputsToState);
+    });
+
+    document.getElementById("logoFile").addEventListener("change", e => readFileAsDataUrl(e.target.files[0], "logoData"));
+    document.getElementById("heroVideoFile").addEventListener("change", e => readFileAsDataUrl(e.target.files[0], "heroVideoData"));
+    document.getElementById("video1File").addEventListener("change", e => readFileAsDataUrl(e.target.files[0], "video1Data"));
+    document.getElementById("video2File").addEventListener("change", e => readFileAsDataUrl(e.target.files[0], "video2Data"));
+    document.getElementById("video3File").addEventListener("change", e => readFileAsDataUrl(e.target.files[0], "video3Data"));
+
+    document.getElementById("addMenuBtn").addEventListener("click", () => {
+      state.menu.push({ title: "New Menu Item", desc: "Write your description here.", tag: "New" });
+      renderMenuEditor();
+      updatePreview();
+    });
+
+    document.getElementById("downloadHtmlBtn").addEventListener("click", () => {
+      downloadFile("index.html", generateSiteHtml(), "text/html");
+    });
+
+    document.getElementById("saveProjectBtn").addEventListener("click", () => {
+      downloadFile("dhia-project.json", JSON.stringify(state, null, 2), "application/json");
+    });
+
+    document.getElementById("loadProjectFile").addEventListener("change", e => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        try {
+          const data = JSON.parse(reader.result);
+          Object.assign(state, data);
+          ids.forEach(id => {
+            document.getElementById(id).value = state[id] || "";
+          });
+          renderMenuEditor();
+          updatePreview();
+          alert("Project loaded.");
+        } catch {
+          alert("That JSON file could not be loaded.");
+        }
+      };
+      reader.readAsText(file);
+    });
+
+    document.getElementById("resetBtn").addEventListener("click", () => {
+      if (!confirm("Reset everything to default?")) return;
+      location.reload();
+    });
+
+    renderMenuEditor();
+    updatePreview();
+  </script>
 </body>
 </html>
